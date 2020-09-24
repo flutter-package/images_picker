@@ -24,12 +24,14 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       let args = call.arguments as? NSDictionary;
       let count = args!["count"] as! Int;
       let pickType = args!["pickType"] as? String;
+      let cropOption = args!["cropOption"] as? NSDictionary;
       let theme = args!["theme"] as? NSDictionary;
 
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let ac = ZLPhotoPreviewSheet();
       let config = ZLPhotoConfiguration.default();
       config.maxSelectCount = count;
+      config.allowEditImage = (cropOption != nil);
       self.setConfig(configuration: config, pickType: pickType);
 
       self.setThemeColor(configuration: config, colors: theme);
@@ -39,11 +41,17 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       ac.selectImageBlock = { (images, assets, isOriginal) in
         let manager = PHImageManager.default();
         if pickType=="PickType.image" { // 解析图片
-//          let group = DispatchGroup();
-          for image in images {
-            resArr.append(self.resolveImage(image: image));
+          let group = DispatchGroup();
+          for (index, image) in images.enumerated() {
+            group.enter();
+            self.resolveImage(asset: assets[index], image: image) { dir in
+              if let dir = dir { resArr.append(dir) }
+              group.leave();
+            }
           }
-          result(resArr);
+          group.notify(queue: .main) {
+            result(resArr);
+          }
         } else if pickType=="PickType.video" { // 解析视频
           let group = DispatchGroup();
           let options = PHVideoRequestOptions()
@@ -72,12 +80,14 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     } else if call.method=="openCamera" {  // 相机拍照、录视频
       let args = call.arguments as? NSDictionary;
       let pickType = args!["pickType"] as? String;
+      let cropOption = args!["cropOption"] as? NSDictionary;
       let maxTime = args!["maxTime"] as? Int;
 
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let camera = ZLCustomCamera();
       let config = ZLPhotoConfiguration.default();
       config.maxRecordDuration = maxTime ?? 15;
+      config.allowEditImage = cropOption != nil;
       self.setConfig(configuration: config, pickType: pickType);
 
       camera.takeDoneBlock = { (image, url) in
@@ -124,13 +134,49 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     return dir;
   }
 
-  private func resolveImage(asset: PHAsset, resultHandler: @escaping (URL?)->Void)->Void {
+  private func resolveImage(asset: PHAsset, image: UIImage, resultHandler: @escaping ([String: StringOrInt]?)->Void)->Void {
+    var dir = [String: StringOrInt]();
     let options: PHContentEditingInputRequestOptions = PHContentEditingInputRequestOptions()
     options.canHandleAdjustmentData = {(adjustmeta: PHAdjustmentData) -> Bool in
       return true
     }
     asset.requestContentEditingInput(with: options, completionHandler: { contentEditingInput, info in
-      resultHandler(contentEditingInput!.fullSizeImageURL);
+      if let url = contentEditingInput!.fullSizeImageURL {
+        let urlStr = url.absoluteString;
+        var fileType = "PNG";
+        if urlStr.hasSuffix("PNG") {
+          fileType = "PNG";
+        } else if urlStr.hasSuffix("JPG") {
+          fileType = "JPG";
+        } else {
+          fileType = "other";
+        }
+        let isSupportType:Bool = fileType=="PNG" || fileType=="JPG";
+        if isSupportType { // png jpg 获取原路径
+          let path = (urlStr as NSString).substring(from: 7);
+          dir.updateValue(path, forKey: "path");
+          dir.updateValue(path, forKey: "thumbPath");
+          do {
+            let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize;
+            dir.updateValue((size ?? 0) as Int, forKey: "size");
+          } catch {
+          }
+        } else { // 不支持的格式转成jpg
+          let data = image.jpegData(compressionQuality: 1);
+          let imagePath = self.createFile(data: data);
+          dir.updateValue(imagePath, forKey: "path");
+          dir.updateValue(imagePath, forKey: "thumbPath");
+          do {
+            let attr = try FileManager.default.attributesOfItem(atPath: imagePath);
+            let fileSize = attr[FileAttributeKey.size] as! UInt64;
+            dir.updateValue(fileSize, forKey: "size");
+          } catch {
+          }
+        }
+        resultHandler(dir);
+      } else {
+        resultHandler(nil);
+      }
     })
   }
 

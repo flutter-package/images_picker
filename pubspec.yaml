@@ -1,7 +1,7 @@
 name: images_picker
-description: A new flutter plugin project.
+description: Flutter plugin for selecting images/videos from the Android and iOS image library, and taking pictures/videos with the camera.
 version: 0.0.1
-homepage: https://github.com/chavesgu
+homepage: https://github.com/chavesgu/images_picker
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

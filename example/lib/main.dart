@@ -39,11 +39,13 @@ class _MyAppState extends State<MyApp> {
               onPressed: ()async {
                 List<Media> res = await ImagesPicker.pick(
                   count: 1,
+                  pickType: PickType.video,
+                  cropOpt: CropOption(),
                 );
                 if (res!=null) {
                   print(res[0]?.path);
                   setState(() {
-                    path = res[0]?.path;
+                    path = res[0]?.thumbPath;
                   });
                 }
               },
@@ -52,17 +54,23 @@ class _MyAppState extends State<MyApp> {
               child: Text('openCamera'),
               onPressed: ()async {
                 List<Media> res = await ImagesPicker.openCamera(
-//                  pickType: PickType.video,
+                  // pickType: PickType.video,
                 );
                 if (res!=null) {
                   print(res[0]?.path);
-                  setState(() {
-                    path = res[0]?.path;
-                  });
+                 setState(() {
+                   path = res[0]?.path;
+                 });
                 }
               },
             ),
-            path!=null?Image.file(File(path)):SizedBox.shrink(),
+            path!=null?Container(
+              height: 200,
+              child: Image.file(
+                File(path),
+                fit: BoxFit.contain,
+              ),
+            ):SizedBox.shrink(),
           ],
         ),
       ),

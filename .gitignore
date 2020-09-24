@@ -1,6 +1,8 @@
 .DS_Store
 .dart_tool/
 
+.metadata
+
 .packages
 .pub/
 
