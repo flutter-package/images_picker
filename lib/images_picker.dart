@@ -49,11 +49,18 @@ class ImagesPicker {
   static Future<List<Media>> openCamera({
     PickType pickType = PickType.image,
     int maxTime = 15,
+    CropOption cropOpt,
   }) async {
     try {
       List<dynamic> res = await _channel.invokeMethod('openCamera', {
         "pickType": pickType.toString(),
         "maxTime": maxTime,
+        "cropOption": cropOpt!=null?{
+          "quality": cropOpt.quality,
+          "cropType": cropOpt.cropType?.toString(),
+          "aspectRatioX": cropOpt.aspectRatio?.aspectRatioX,
+          "aspectRatioY": cropOpt.aspectRatio?.aspectRatioY,
+        }:null,
       });
       if (res.length > 0) {
         List<Media> output = (res ?? []).map((image) {

@@ -120,10 +120,12 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
       case "openCamera": {
         String pickType = call.argument("pickType");
         int maxTime = call.argument("maxTime");
+        HashMap<String, Object> cropOption = call.argument("cropOption");
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openCamera(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
         model.recordVideoSecond(maxTime);
         Utils.setPhotoSelectOpt(model, 1);
+        if (cropOption!=null) Utils.setCropOpt(model, cropOption);
         resolveMedias(model);
         break;
       }
