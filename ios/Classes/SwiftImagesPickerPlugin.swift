@@ -289,8 +289,9 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     configuration.languageType = .chineseSimplified;
     configuration.allowTakePhotoInLibrary = false;
     configuration.allowMixSelect = true;
-    configuration.allowEditImage = false;
+//    configuration.allowEditImage = false;
     configuration.allowEditVideo = false;
+    configuration.saveNewImageAfterEdit = false;
     if pickType=="PickType.video" {
       configuration.allowSelectImage = false;
       configuration.allowSelectVideo = true;

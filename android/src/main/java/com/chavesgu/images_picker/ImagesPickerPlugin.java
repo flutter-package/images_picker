@@ -123,6 +123,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         HashMap<String, Object> cropOption = call.argument("cropOption");
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openCamera(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
+        model.setOutputCameraPath(context.getCacheDir().getAbsolutePath());
         model.recordVideoSecond(maxTime);
         Utils.setPhotoSelectOpt(model, 1);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
