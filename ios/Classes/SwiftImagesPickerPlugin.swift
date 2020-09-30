@@ -2,6 +2,7 @@ import Flutter
 import UIKit
 import AssetsLibrary
 import Photos
+import MobileCoreServices
 import ZLPhotoBrowser
 
 protocol StringOrInt { }
@@ -24,15 +25,23 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       let args = call.arguments as? NSDictionary;
       let count = args!["count"] as! Int;
       let pickType = args!["pickType"] as? String;
+      let supportGif = args!["gif"] as! Bool;
+      let maxSize = args!["maxSize"] as? Int;
       let cropOption = args!["cropOption"] as? NSDictionary;
       let theme = args!["theme"] as? NSDictionary;
 
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let ac = ZLPhotoPreviewSheet();
       let config = ZLPhotoConfiguration.default();
-      config.maxSelectCount = count;
-      config.allowEditImage = (cropOption != nil);
       self.setConfig(configuration: config, pickType: pickType);
+      config.maxSelectCount = count;
+      config.allowSelectGif = supportGif;
+      if cropOption != nil {
+        config.allowEditImage = true;
+        if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
+          config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+        }
+      }
 
       self.setThemeColor(configuration: config, colors: theme);
 
@@ -43,9 +52,15 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
         if pickType=="PickType.image" { // 解析图片
           let group = DispatchGroup();
           for (index, image) in images.enumerated() {
+            let asset = assets[index];
             group.enter();
-            self.resolveImage(asset: assets[index], image: image) { dir in
-              if let dir = dir { resArr.append(dir) }
+            if self.getImageType(asset: asset)=="gif" && supportGif { // gif 取原路径
+              self.resolveImage(asset: asset, resultHandler: { dir in
+                resArr.append(dir);
+                group.leave();
+              })
+            } else {
+              resArr.append(self.resolveImage(image: image, maxSize: maxSize));
               group.leave();
             }
           }
@@ -81,20 +96,26 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       let args = call.arguments as? NSDictionary;
       let pickType = args!["pickType"] as? String;
       let cropOption = args!["cropOption"] as? NSDictionary;
+      let maxSize = args!["maxSize"] as? Int;
       let maxTime = args!["maxTime"] as? Int;
 
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let camera = ZLCustomCamera();
       let config = ZLPhotoConfiguration.default();
       config.maxRecordDuration = maxTime ?? 15;
-      config.allowEditImage = cropOption != nil;
       self.setConfig(configuration: config, pickType: pickType);
+      if cropOption != nil {
+        config.allowEditImage = true;
+        if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
+          config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+        }
+      }
 
       camera.takeDoneBlock = { (image, url) in
         if pickType=="PickType.image" {
           if let image = image {
             var resArr = [[String: StringOrInt]]();
-            resArr.append(self.resolveImage(image: image));
+            resArr.append(self.resolveImage(image: image, maxSize: maxSize));
             result(resArr);
           } else {
             result(nil);
@@ -119,10 +140,17 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     }
   }
 
-  private func resolveImage(image: UIImage)->[String: StringOrInt] {
+  // 图片解析  写入tmp
+  private func resolveImage(image: UIImage, maxSize: Int?)->[String: StringOrInt] {
     var dir = [String: StringOrInt]();
-    let data = image.jpegData(compressionQuality: 1);
-    let imagePath = self.createFile(data: data);
+    let data:Data?;
+    let imagePath:String;
+    if let maxSize = maxSize { // 需要压缩
+      imagePath = self.compressImage(image: image, maxSize: maxSize);
+    } else { // 不需要压缩
+      data = image.jpegData(compressionQuality: 1);
+      imagePath = self.createFile(data: data);
+    }
     dir.updateValue(imagePath, forKey: "path");
     dir.updateValue(imagePath, forKey: "thumbPath");
     do {
@@ -133,8 +161,8 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     }
     return dir;
   }
-
-  private func resolveImage(asset: PHAsset, image: UIImage, resultHandler: @escaping ([String: StringOrInt]?)->Void)->Void {
+// 解析gif
+  private func resolveImage(asset: PHAsset, resultHandler: @escaping ([String: StringOrInt])->Void)->Void {
     var dir = [String: StringOrInt]();
     let options: PHContentEditingInputRequestOptions = PHContentEditingInputRequestOptions()
     options.canHandleAdjustmentData = {(adjustmeta: PHAdjustmentData) -> Bool in
@@ -143,39 +171,17 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     asset.requestContentEditingInput(with: options, completionHandler: { contentEditingInput, info in
       if let url = contentEditingInput!.fullSizeImageURL {
         let urlStr = url.absoluteString;
-        var fileType = "PNG";
-        if urlStr.hasSuffix("PNG") {
-          fileType = "PNG";
-        } else if urlStr.hasSuffix("JPG") {
-          fileType = "JPG";
-        } else {
-          fileType = "other";
-        }
-        let isSupportType:Bool = fileType=="PNG" || fileType=="JPG";
-        if isSupportType { // png jpg 获取原路径
-          let path = (urlStr as NSString).substring(from: 7);
-          dir.updateValue(path, forKey: "path");
-          dir.updateValue(path, forKey: "thumbPath");
-          do {
-            let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize;
-            dir.updateValue((size ?? 0) as Int, forKey: "size");
-          } catch {
-          }
-        } else { // 不支持的格式转成jpg
-          let data = image.jpegData(compressionQuality: 1);
-          let imagePath = self.createFile(data: data);
-          dir.updateValue(imagePath, forKey: "path");
-          dir.updateValue(imagePath, forKey: "thumbPath");
-          do {
-            let attr = try FileManager.default.attributesOfItem(atPath: imagePath);
-            let fileSize = attr[FileAttributeKey.size] as! UInt64;
-            dir.updateValue(fileSize, forKey: "size");
-          } catch {
-          }
+        let path = (urlStr as NSString).substring(from: 7);
+        dir.updateValue(path, forKey: "path");
+        dir.updateValue(path, forKey: "thumbPath");
+        do {
+          let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize;
+          dir.updateValue((size ?? 0) as Int, forKey: "size");
+        } catch {
         }
         resultHandler(dir);
       } else {
-        resultHandler(nil);
+        resultHandler(dir);
       }
     })
   }
@@ -223,8 +229,28 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     return filename;
   }
 
-  private func compressImage(image: UIImage) {
-
+  private func compressImage(image: UIImage, maxSize: Int)->String {
+    let maxSize = maxSize * 1000; // to kb
+    let image = self.resizeImage(originalImg: image);
+    var compression:CGFloat = 1;
+    var data:Data = image.jpegData(compressionQuality: compression)!;
+    if (data.count < maxSize) {
+      return self.createFile(data: data);
+    }
+    var max:CGFloat = 1;
+    var min:CGFloat = 0;
+    for index in (0...5) {
+      compression = (max + min) / 2;
+      data = image.jpegData(compressionQuality: compression)!;
+      if (data.count < maxSize * Int(0.9)) {
+          min = compression;
+      } else if (data.count > maxSize) {
+          max = compression;
+      } else {
+          break;
+      }
+    }
+    return self.createFile(data: data);
   }
 
   private func resizeImage(originalImg:UIImage) -> UIImage{
@@ -283,17 +309,46 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
 
     return resizedImg ?? originalImg
   }
+  
+  private func getImageType(asset: PHAsset)->String {
+    if let filename = asset.value(forKey: "filename") as? String {
+      if let index = filename.lastIndex(of: ".") {
+        let temp = filename.suffix(from: index);
+        return String(temp.suffix(from: temp.index(temp.startIndex, offsetBy: 1))).lowercased();
+      }
+      return "unknown";
+    }
+//    if let identifier = asset.value(forKey: "uniformTypeIdentifier") as? String {
+//      if identifier == kUTTypeJPEG as String {
+//        return "jpg";
+//      }
+//      if identifier == kUTTypePNG as String {
+//        return "png";
+//      }
+//      if identifier == kUTTypeGIF as String {
+//        return "gif";
+//      }
+//      return "unknown";
+//    }
+    // kUTTypeJPEG
+    // kUTTypeGIF
+    // kUTTypePNG
+    return "unknown";
+  }
 
   private func setConfig(configuration: ZLPhotoConfiguration, pickType: String?) {
 //    configuration.style = .externalAlbumList;
     configuration.languageType = .chineseSimplified;
     configuration.allowTakePhotoInLibrary = false;
     configuration.allowMixSelect = true;
-//    configuration.allowEditImage = false;
+    configuration.allowEditImage = false;
     configuration.allowEditVideo = false;
     configuration.saveNewImageAfterEdit = false;
     if pickType=="PickType.video" {
       configuration.allowSelectImage = false;
+      configuration.allowSelectVideo = true;
+    } else if pickType=="PickType.all" {
+      configuration.allowSelectImage = true;
       configuration.allowSelectVideo = true;
     } else {
       configuration.allowSelectImage = true;

@@ -109,23 +109,40 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
       case "pick": {
         int count = (int) call.argument("count");
         String pickType = call.argument("pickType");
+        double quality = call.argument("quality");
+        boolean supportGif = call.argument("gif");
         HashMap<String, Object> cropOption = call.argument("cropOption");
+
+        int chooseType;
+        switch (pickType) {
+          case "PickType.video":
+            chooseType = PictureMimeType.ofVideo();
+            break;
+          case "PickType.all":
+            chooseType = PictureMimeType.ofAll();
+            break;
+          default:
+            chooseType = PictureMimeType.ofImage();
+            break;
+        }
         PictureSelectionModel model = PictureSelector.create(activity)
-                .openGallery(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
-        Utils.setPhotoSelectOpt(model, count);
+                .openGallery(chooseType);
+        Utils.setPhotoSelectOpt(model, count, quality);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
+        model.isGif(supportGif);
         resolveMedias(model);
         break;
       }
       case "openCamera": {
         String pickType = call.argument("pickType");
         int maxTime = call.argument("maxTime");
+        double quality = call.argument("quality");
         HashMap<String, Object> cropOption = call.argument("cropOption");
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openCamera(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
         model.setOutputCameraPath(context.getCacheDir().getAbsolutePath());
         model.recordVideoSecond(maxTime);
-        Utils.setPhotoSelectOpt(model, 1);
+        Utils.setPhotoSelectOpt(model, 1, quality);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
         resolveMedias(model);
         break;
@@ -143,13 +160,14 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         // 结果回调
         List<Object> resArr = new ArrayList<Object>();
         for (LocalMedia media:medias) {
+          Log.i("media mimeType", media.getMimeType());
           HashMap<String, Object> map = new HashMap<String, Object>();
           String path = media.getPath();
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             path = media.getAndroidQToPath();
           }
-          if (media.isCompressed()) path = media.getCompressPath();
           if (media.isCut()) path = media.getCutPath();
+          if (media.isCompressed()) path = media.getCompressPath();
           path = copyToTmp(path);
           map.put("path", path);
 
@@ -197,7 +215,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
 
   private int getFileSize(String path) {
     File file = new File(path);
-    int size = Integer.parseInt(String.valueOf(file.length()/1024));
+    int size = Integer.parseInt(String.valueOf(file.length()));
     return size;
   }
 
