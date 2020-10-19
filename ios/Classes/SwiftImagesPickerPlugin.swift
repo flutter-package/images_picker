@@ -338,7 +338,7 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
 
   private func setConfig(configuration: ZLPhotoConfiguration, pickType: String?) {
 //    configuration.style = .externalAlbumList;
-    configuration.languageType = .chineseSimplified;
+    configuration.languageType = .system;
     configuration.allowTakePhotoInLibrary = false;
     configuration.allowMixSelect = true;
     configuration.allowEditImage = false;

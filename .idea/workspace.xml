@@ -11,17 +11,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed9556d7-7535-4fa7-9e3b-9dd66fa7a9e0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/ios/Podfile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/generated/i18n.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/images_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/images_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/ios/Classes/SwiftImagesPickerPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/ios/Classes/SwiftImagesPickerPlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/i18n.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/images_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/images_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftImagesPickerPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftImagesPickerPlugin.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +50,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -87,7 +95,13 @@
       <workItem from="1601021588705" duration="679000" />
       <workItem from="1601279117234" duration="3697000" />
       <workItem from="1601341661653" duration="6222000" />
-      <workItem from="1601429145570" duration="5994000" />
+      <workItem from="1601429145570" duration="12130000" />
+      <workItem from="1601459320828" duration="1007000" />
+      <workItem from="1601541889608" duration="517000" />
+      <workItem from="1601543167914" duration="153000" />
+      <workItem from="1602208081218" duration="396000" />
+      <workItem from="1602221760779" duration="294000" />
+      <workItem from="1603077717483" duration="757000" />
     </task>
     <servers />
   </component>
@@ -95,21 +109,25 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1513" height="270" key="GridCell.Tab.0.bottom" timestamp="1600942069558">
-      <screen x="0" y="23" width="1792" height="997" />
+    <state width="1513" height="268" key="GridCell.Tab.0.bottom" timestamp="1601463220732">
+      <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069558" />
-    <state width="1513" height="270" key="GridCell.Tab.0.center" timestamp="1600942069557">
-      <screen x="0" y="23" width="1792" height="997" />
+    <state width="1513" height="268" key="GridCell.Tab.0.bottom/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
+    <state width="1513" height="268" key="GridCell.Tab.0.center" timestamp="1601463220732">
+      <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069557" />
-    <state width="1513" height="270" key="GridCell.Tab.0.left" timestamp="1600942069556">
-      <screen x="0" y="23" width="1792" height="997" />
+    <state width="1513" height="268" key="GridCell.Tab.0.center/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
+    <state width="1513" height="268" key="GridCell.Tab.0.left" timestamp="1601463220732">
+      <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069556" />
-    <state width="1513" height="270" key="GridCell.Tab.0.right" timestamp="1600942069558">
-      <screen x="0" y="23" width="1792" height="997" />
+    <state width="1513" height="268" key="GridCell.Tab.0.left/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
+    <state width="1513" height="268" key="GridCell.Tab.0.right" timestamp="1601463220732">
+      <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069558" />
+    <state width="1513" height="268" key="GridCell.Tab.0.right/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
   </component>
 </project>

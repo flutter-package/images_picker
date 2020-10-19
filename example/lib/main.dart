@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: ()async {
                 List<Media> res = await ImagesPicker.pick(
                   count: 1,
-                  pickType: PickType.video,
+                  // pickType: PickType.video,
                   cropOpt: CropOption(),
                 );
                 if (res!=null) {

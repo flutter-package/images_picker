@@ -9,7 +9,7 @@ android(21+): [PictureSelector](https://github.com/LuckSiege/PictureSelector)
 This plugin is learn from [lisen87/image_pickers](https://github.com/lisen87/image_pickers)
 
 ### Support
-- pick multiple images/videos from photo album
+- pick multiple images/videos from photo album (wechat style)
 - use camera to take image/video
 - crop images with custom aspectRatio
 - compress images with quality/maxSize
