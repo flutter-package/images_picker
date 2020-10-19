@@ -13,6 +13,8 @@ This plugin is learn from [lisen87/image_pickers](https://github.com/lisen87/ima
 - use camera to take image/video
 - crop images with custom aspectRatio
 - compress images with quality/maxSize
+- localizations currently support english,chinese,japanese(more for android)
+> Don't need to set localizations,the plugin will follow system
 
 ### Install
 For ios:
