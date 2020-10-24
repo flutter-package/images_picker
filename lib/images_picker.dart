@@ -114,13 +114,13 @@ enum CropType {
 }
 
 class CropAspectRatio {
-  final double aspectRatioX;
-  final double aspectRatioY;
+  final int aspectRatioX;
+  final int aspectRatioY;
 
   const CropAspectRatio(this.aspectRatioX, this.aspectRatioY)
     :
-      assert(aspectRatioX > 0.0, 'aspectRatioX must > 0'),
-      assert(aspectRatioY > 0.0, 'aspectRatioY must > 0');
+      assert(aspectRatioX > 0, 'aspectRatioX must > 0'),
+      assert(aspectRatioY > 0, 'aspectRatioY must > 0');
 
   static const custom = null;
   static const wh2x1 = CropAspectRatio(2, 1);

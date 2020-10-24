@@ -12,7 +12,16 @@
   <component name="ChangeListManager">
     <list default="true" id="ed9556d7-7535-4fa7-9e3b-9dd66fa7a9e0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/images_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/images_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/images_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/images_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +45,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -86,7 +96,9 @@
       <workItem from="1601543167914" duration="153000" />
       <workItem from="1602208081218" duration="396000" />
       <workItem from="1602221760779" duration="294000" />
-      <workItem from="1603077717483" duration="1346000" />
+      <workItem from="1603077717483" duration="1839000" />
+      <workItem from="1603432959521" duration="222000" />
+      <workItem from="1603512713737" duration="1320000" />
     </task>
     <servers />
   </component>
@@ -94,25 +106,25 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1513" height="268" key="GridCell.Tab.0.bottom" timestamp="1601463220732">
+    <state width="1513" height="268" key="GridCell.Tab.0.bottom" timestamp="1603513492302">
       <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069558" />
-    <state width="1513" height="268" key="GridCell.Tab.0.bottom/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
-    <state width="1513" height="268" key="GridCell.Tab.0.center" timestamp="1601463220732">
+    <state width="1513" height="268" key="GridCell.Tab.0.bottom/0.23.1792.993@0.23.1792.993" timestamp="1603513492302" />
+    <state width="1513" height="268" key="GridCell.Tab.0.center" timestamp="1603513492301">
       <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069557" />
-    <state width="1513" height="268" key="GridCell.Tab.0.center/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
-    <state width="1513" height="268" key="GridCell.Tab.0.left" timestamp="1601463220732">
+    <state width="1513" height="268" key="GridCell.Tab.0.center/0.23.1792.993@0.23.1792.993" timestamp="1603513492301" />
+    <state width="1513" height="268" key="GridCell.Tab.0.left" timestamp="1603513492300">
       <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069556" />
-    <state width="1513" height="268" key="GridCell.Tab.0.left/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
-    <state width="1513" height="268" key="GridCell.Tab.0.right" timestamp="1601463220732">
+    <state width="1513" height="268" key="GridCell.Tab.0.left/0.23.1792.993@0.23.1792.993" timestamp="1603513492300" />
+    <state width="1513" height="268" key="GridCell.Tab.0.right" timestamp="1603513492301">
       <screen x="0" y="23" width="1792" height="993" />
     </state>
     <state width="1513" height="270" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1792.997@0.23.1792.997" timestamp="1600942069558" />
-    <state width="1513" height="268" key="GridCell.Tab.0.right/0.23.1792.993@0.23.1792.993" timestamp="1601463220732" />
+    <state width="1513" height="268" key="GridCell.Tab.0.right/0.23.1792.993@0.23.1792.993" timestamp="1603513492301" />
   </component>
 </project>

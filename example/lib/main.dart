@@ -40,7 +40,9 @@ class _MyAppState extends State<MyApp> {
                 List<Media> res = await ImagesPicker.pick(
                   count: 1,
                   // pickType: PickType.video,
-                  cropOpt: CropOption(),
+                  cropOpt: CropOption(
+                    aspectRatio: CropAspectRatio.wh16x9
+                  ),
                 );
                 if (res!=null) {
                   print(res[0]?.path);

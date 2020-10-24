@@ -1,3 +1,9 @@
+## 0.0.5
+fix android cast error
+
+## 0.0.4
+fix ios language
+
 ## 0.0.3
 fix some bug
 
