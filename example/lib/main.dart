@@ -36,16 +36,16 @@ class _MyAppState extends State<MyApp> {
             Text('Running on: $_platformVersion\n'),
             RaisedButton(
               child: Text('pick'),
-              onPressed: ()async {
+              onPressed: () async {
                 List<Media> res = await ImagesPicker.pick(
-                  count: 1,
+                  count: 3,
                   // pickType: PickType.video,
                   cropOpt: CropOption(
-                    aspectRatio: CropAspectRatio.wh16x9
-                  ),
+                      // aspectRatio: CropAspectRatio.wh16x9
+                      ),
                 );
-                if (res!=null) {
-                  print(res[0]?.path);
+                if (res != null) {
+                  print(res.map((e) => e.path).toList());
                   setState(() {
                     path = res[0]?.thumbPath;
                   });
@@ -54,25 +54,27 @@ class _MyAppState extends State<MyApp> {
             ),
             RaisedButton(
               child: Text('openCamera'),
-              onPressed: ()async {
+              onPressed: () async {
                 List<Media> res = await ImagesPicker.openCamera(
-                  // pickType: PickType.video,
-                );
-                if (res!=null) {
+                    // pickType: PickType.video,
+                    );
+                if (res != null) {
                   print(res[0]?.path);
-                 setState(() {
-                   path = res[0]?.path;
-                 });
+                  setState(() {
+                    path = res[0]?.path;
+                  });
                 }
               },
             ),
-            path!=null?Container(
-              height: 200,
-              child: Image.file(
-                File(path),
-                fit: BoxFit.contain,
-              ),
-            ):SizedBox.shrink(),
+            path != null
+                ? Container(
+                    height: 200,
+                    child: Image.file(
+                      File(path),
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                : SizedBox.shrink(),
           ],
         ),
       ),

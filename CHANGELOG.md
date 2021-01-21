@@ -1,3 +1,6 @@
+## 0.0.6
+fix
+
 ## 0.0.5
 fix android cast error
 

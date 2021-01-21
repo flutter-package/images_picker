@@ -182,11 +182,12 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
           int size = getFileSize(path);
           map.put("size", size);
 
-//          PictureFileUtils.deleteCacheDirFile(context, type);
-          PictureFileUtils.deleteAllCacheDirFile(context);
-
           resArr.add(map);
         }
+
+//          PictureFileUtils.deleteCacheDirFile(context, type);
+        PictureFileUtils.deleteAllCacheDirFile(context);
+
         _result.success(resArr);
       }
       @Override
@@ -239,13 +240,13 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
           }
           resPath = to.getAbsolutePath();
         } catch (IOException e) {
-
+          Log.w("image_picker", e.getLocalizedMessage());
         }
       } catch (FileNotFoundException e) {
-
+        Log.w("image_picker", e.getLocalizedMessage());
       }
     } catch (IOException e) {
-
+      Log.w("image_picker", e.getLocalizedMessage());
     }
     return resPath;
   }
