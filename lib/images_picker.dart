@@ -1,14 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/services.dart';
 
 class ImagesPicker {
   static const MethodChannel _channel =
       const MethodChannel('chavesgu/images_picker');
-
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
 
   static Future<List<Media>> pick({
     int count = 1,
@@ -104,6 +100,24 @@ class ImagesPicker {
     } catch (e) {
 //      print(e);
       return null;
+    }
+  }
+
+  static Future<bool> saveImageToAlbum(File file) async {
+    if (file == null) return false;
+    try {
+      return await _channel.invokeMethod('saveImageToAlbum', file.path);
+    } on PlatformException catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> saveVideoToAlbum(File file) async {
+    if (file == null) return false;
+    try {
+      return await _channel.invokeMethod('saveVideoToAlbum', file.path);
+    } on PlatformException catch (e) {
+      return false;
     }
   }
 }

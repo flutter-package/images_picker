@@ -1,12 +1,21 @@
 package com.chavesgu.images_picker;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -18,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +37,7 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -46,9 +58,11 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 import com.yalantis.ucrop.util.FileUtils;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static java.io.File.separator;
 
 /** ImagesPickerPlugin */
-public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.RequestPermissionsResultListener {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -57,6 +71,10 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
   private Result _result;
   private Activity activity;
   private Context context;
+  private int WRITE_IMAGE_CODE = 33;
+  private int WRITE_VIDEO_CODE = 44;
+  private String WRITE_IMAGE_PATH;
+  private String WRITE_VIDEO_PATH;
   public static String channelName = "chavesgu/images_picker";
 
   @Override
@@ -71,6 +89,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
     final MethodChannel channel = new MethodChannel(registrar.messenger(), channelName);
     channel.setMethodCallHandler(instance);
     instance.context = registrar.context();
+    registrar.addRequestPermissionsResultListener(instance);
   }
 
   @Override
@@ -81,6 +100,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     activity = binding.getActivity();
+    binding.addRequestPermissionsResultListener(this);
   }
 
   @Override
@@ -147,6 +167,37 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         resolveMedias(model);
         break;
       }
+      case "saveVideoToAlbum": {
+        String path = (String) call.arguments;
+        WRITE_VIDEO_PATH = path;
+        if (hasPermission()) {
+          saveVideoToGallery(path);
+        } else {
+          String[] permissions = new String[2];
+          permissions[0] = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+          permissions[1] = Manifest.permission.READ_EXTERNAL_STORAGE;
+          ActivityCompat.requestPermissions(activity, permissions, WRITE_VIDEO_CODE);
+        }
+        break;
+      }
+      case "saveImageToAlbum": {
+        String path = (String) call.arguments;
+        WRITE_IMAGE_PATH = path;
+        if (hasPermission()) {
+          saveImageToGallery(path);
+        } else {
+          String[] permissions = new String[2];
+          permissions[0] = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+          permissions[1] = Manifest.permission.READ_EXTERNAL_STORAGE;
+          ActivityCompat.requestPermissions(activity, permissions, WRITE_IMAGE_CODE);
+        }
+        break;
+      }
+//      case "saveNetworkImageToAlbum": {
+//        String url = (String) call.arguments;
+//        saveNetworkImageToGallery(url);
+//        break;
+//      }
       default:
         result.notImplemented();
         break;
@@ -250,4 +301,63 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
     }
     return resPath;
   }
+
+  private void saveImageToGallery(final String path) {
+    boolean status = false;
+    String suffix = path.substring(path.lastIndexOf('.'));
+    Bitmap bitmap = BitmapFactory.decodeFile(path);
+    status = FileSaver.saveImage(context, bitmap, suffix);
+    _result.success(status);
+  }
+
+  private void saveNetworkImageToGallery(final String url) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        URL imageurl = null;
+        boolean status = false;
+        try {
+          imageurl = new URL(url);
+          try {
+            String suffix = url.substring(url.lastIndexOf('.'));
+            Bitmap bitmap = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
+            status = FileSaver.saveImage(context, bitmap, suffix);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+        final boolean finalStatus = status;
+        new Handler(context.getMainLooper()).post(new Runnable() {
+          @Override
+          public void run() {
+            _result.success(finalStatus);
+          }
+        });
+      }
+    }).start();
+  }
+
+  private void saveVideoToGallery(String path) {
+    _result.success(FileSaver.saveVideo(context, path));
+  }
+
+  private boolean hasPermission() {
+    return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+            (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED && activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED);
+  }
+
+    @Override
+    public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+      if (requestCode == WRITE_IMAGE_CODE && grantResults[0] == PERMISSION_GRANTED && grantResults[1] == PERMISSION_GRANTED) {
+          saveImageToGallery(WRITE_IMAGE_PATH);
+          return true;
+      }
+      if (requestCode == WRITE_VIDEO_CODE && grantResults[0] == PERMISSION_GRANTED && grantResults[1] == PERMISSION_GRANTED) {
+          saveVideoToGallery(WRITE_VIDEO_PATH);
+          return true;
+      }
+      return false;
+    }
 }

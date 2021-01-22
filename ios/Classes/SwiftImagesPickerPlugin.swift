@@ -131,10 +131,64 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
         }
       }
       vc.showDetailViewController(camera, sender: nil);
+    } else if call.method=="saveNetworkImageToAlbum" {
+      let path = call.arguments as! String;
+      if let url = URL(string: path) {
+        var output:Bool = false;
+        let group = DispatchGroup();
+        group.enter();
+        if let data = try? Data(contentsOf: url) {
+          ZLPhotoManager.saveImageToAlbum(image: UIImage(data: data)!, completion: {bool,_ in
+            output = bool;
+            group.leave();
+          });
+        } else {
+          group.leave();
+          output = false;
+        }
+        group.notify(queue: .main) {
+          result(output);
+        }
+      } else {
+        result(false);
+      }
     } else if call.method=="saveImageToAlbum" {
-//      ZLPhotoManager.saveImageToAlbum();
+      let path = call.arguments as! String;
+      ZLPhotoManager.saveImageToAlbum(image: UIImage.init(contentsOfFile: path)!, completion: {bool,_ in
+        result(bool);
+      });
+    } else if call.method=="saveNetworkVideoToAlbum" {
+      let path = call.arguments as! String;
+      if let url = URL(string: path) {
+        var output:Bool = false;
+        let group = DispatchGroup();
+        group.enter();
+        if let data = try? Data(contentsOf: url) {
+          let uuid = UUID().uuidString;
+          let tmpDir = NSTemporaryDirectory();
+          let filename = "\(tmpDir)image_picker_\(uuid).mp4";
+          let fileManager = FileManager.default;
+          fileManager.createFile(atPath: filename, contents: data, attributes: nil);
+          print(filename);
+          ZLPhotoManager.saveVideoToAblum(url: URL(fileURLWithPath: filename), completion: {bool,_ in
+            output = bool;
+            group.leave();
+          });
+        } else {
+          group.leave();
+          output = false;
+        }
+        group.notify(queue: .main) {
+          result(output);
+        }
+      } else {
+        result(false);
+      }
     } else if call.method=="saveVideoToAlbum" {
-//      ZLPhotoManager.saveVideoToAblum();
+      let path = call.arguments as! String;
+      ZLPhotoManager.saveVideoToAblum(url: URL(fileURLWithPath: path), completion: {bool,_ in
+        result(bool);
+      });
     } else {
       result(nil);
     }

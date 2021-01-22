@@ -1,3 +1,6 @@
+## 0.0.7
+add ios/android save image/video to album/gallery
+
 ## 0.0.6
 fix
 

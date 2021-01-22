@@ -1,18 +1,17 @@
 # images_picker
 
-Flutter plugin for selecting images/videos from the Android and iOS image library, and taking pictures/videos with the camera
+Flutter plugin for selecting images/videos from the Android and iOS image library, and taking pictures/videos with the camera,save image/video to album/gallery
 
 ios(10+): [ZLPhotoBrowser](https://github.com/longitachi/ZLPhotoBrowser)
 
 android(21+): [PictureSelector](https://github.com/LuckSiege/PictureSelector)
-
-This plugin is learn from [lisen87/image_pickers](https://github.com/lisen87/image_pickers)
 
 ### Support
 - pick multiple images/videos from photo album (wechat style)
 - use camera to take image/video
 - crop images with custom aspectRatio
 - compress images with quality/maxSize
+- save image/video to album/gallery
 - localizations currently support english,chinese,japanese(more for android)
 > Don't need to set localizations,the plugin will follow system
 
@@ -57,6 +56,19 @@ Future getImage() async {
 // .size (kb)
 }
 ```
+- simple picker video
+```dart
+Future getImage() async {
+    List<Media> res = await ImagesPicker.pick(
+      count: 3,
+      pickType: PickType.video,
+    );
+// Media
+// .path
+// .thumbPath (path for video thumb)
+// .size (kb)
+}
+```
 - simple open camera
 ```dart
 ImagesPicker.openCamera(
@@ -91,6 +103,31 @@ ImagesPicker.pick(
   maxSize: 500, // only for ios (kb)
 );
 ```
+- save file to album
+```dart
+ImagesPicker.saveImageToAlbum(file);
+ImagesPicker.saveVideoToAlbum(file);
+```
+- save network file to album
+
+**because the HTTP request is uncontrollable in plugin(such as progress),you must download file ahead of time**
+```dart
+void save() async {
+    File file = await downloadFile('https://xxx.example.com/xx.png');
+    bool res = await ImagesPicker.saveImageToAlbum(file);
+    print(res);
+}
+
+Future<File> downloadFile(String url) async {
+  Dio simple = Dio();
+  String savePath = Directory.systemTemp.path + '/' + url.split('/').last;
+  await simple.download(url, savePath,
+      options: Options(responseType: ResponseType.bytes));
+  print(savePath);
+  File file = new File(savePath);
+  return file;
+}
+```
 ### All params
 ```dart
 // for pick
@@ -110,8 +147,8 @@ double quality,
 ```
 
 ### TODO LIST.
-- [ ] save image/videos to Photo album
-- [ ] use custom themeColor
+- [x] save image/videos to Photo album
+- [x] use custom themeColor
 
 # License
 MIT License
