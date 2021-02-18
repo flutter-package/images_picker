@@ -75,6 +75,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
   private int WRITE_VIDEO_CODE = 44;
   private String WRITE_IMAGE_PATH;
   private String WRITE_VIDEO_PATH;
+  private String ALBUM_NAME;
   public static String channelName = "chavesgu/images_picker";
 
   @Override
@@ -160,7 +161,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         HashMap<String, Object> cropOption = call.argument("cropOption");
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openCamera(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
-        model.setOutputCameraPath(context.getCacheDir().getAbsolutePath());
+        model.setOutputCameraPath(context.getExternalCacheDir().getAbsolutePath());
         model.recordVideoSecond(maxTime);
         Utils.setPhotoSelectOpt(model, 1, quality);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
@@ -168,10 +169,12 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         break;
       }
       case "saveVideoToAlbum": {
-        String path = (String) call.arguments;
+        String path = (String) call.argument("path");
+        String albumName = call.argument("albumName");
         WRITE_VIDEO_PATH = path;
+        ALBUM_NAME = albumName;
         if (hasPermission()) {
-          saveVideoToGallery(path);
+          saveVideoToGallery(path, albumName);
         } else {
           String[] permissions = new String[2];
           permissions[0] = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -181,10 +184,12 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         break;
       }
       case "saveImageToAlbum": {
-        String path = (String) call.arguments;
+        String path = (String) call.argument("path");
+        String albumName = call.argument("albumName");
         WRITE_IMAGE_PATH = path;
+        ALBUM_NAME = albumName;
         if (hasPermission()) {
-          saveImageToGallery(path);
+          saveImageToGallery(path, albumName);
         } else {
           String[] permissions = new String[2];
           permissions[0] = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -302,45 +307,16 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
     return resPath;
   }
 
-  private void saveImageToGallery(final String path) {
+  private void saveImageToGallery(final String path, String albumName) {
     boolean status = false;
     String suffix = path.substring(path.lastIndexOf('.'));
     Bitmap bitmap = BitmapFactory.decodeFile(path);
-    status = FileSaver.saveImage(context, bitmap, suffix);
+    status = FileSaver.saveImage(context, bitmap, suffix, albumName);
     _result.success(status);
   }
 
-  private void saveNetworkImageToGallery(final String url) {
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        URL imageurl = null;
-        boolean status = false;
-        try {
-          imageurl = new URL(url);
-          try {
-            String suffix = url.substring(url.lastIndexOf('.'));
-            Bitmap bitmap = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
-            status = FileSaver.saveImage(context, bitmap, suffix);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        } catch (MalformedURLException e) {
-          e.printStackTrace();
-        }
-        final boolean finalStatus = status;
-        new Handler(context.getMainLooper()).post(new Runnable() {
-          @Override
-          public void run() {
-            _result.success(finalStatus);
-          }
-        });
-      }
-    }).start();
-  }
-
-  private void saveVideoToGallery(String path) {
-    _result.success(FileSaver.saveVideo(context, path));
+  private void saveVideoToGallery(String path, String albumName) {
+    _result.success(FileSaver.saveVideo(context, path, albumName));
   }
 
   private boolean hasPermission() {
@@ -351,11 +327,11 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
       if (requestCode == WRITE_IMAGE_CODE && grantResults[0] == PERMISSION_GRANTED && grantResults[1] == PERMISSION_GRANTED) {
-          saveImageToGallery(WRITE_IMAGE_PATH);
+          saveImageToGallery(WRITE_IMAGE_PATH, ALBUM_NAME);
           return true;
       }
       if (requestCode == WRITE_VIDEO_CODE && grantResults[0] == PERMISSION_GRANTED && grantResults[1] == PERMISSION_GRANTED) {
-          saveVideoToGallery(WRITE_VIDEO_PATH);
+          saveVideoToGallery(WRITE_VIDEO_PATH, ALBUM_NAME);
           return true;
       }
       return false;

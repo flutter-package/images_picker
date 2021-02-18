@@ -48,9 +48,8 @@ class _MyAppState extends State<MyApp> {
                   setState(() {
                     path = res[0]?.thumbPath;
                   });
-                  bool status =
-                      await ImagesPicker.saveImageToAlbum(File(res[0]?.path));
-                  print(status);
+                  // bool status = await ImagesPicker.saveImageToAlbum(File(res[0]?.path));
+                  // print(status);
                 }
               },
             ),
@@ -70,18 +69,16 @@ class _MyAppState extends State<MyApp> {
             ),
             RaisedButton(
               onPressed: () async {
-                File file =
-                    await downloadFile('https://cdn.chavesgu.com/logo.png');
-                bool res = await ImagesPicker.saveImageToAlbum(file);
+                File file = await downloadFile('https://cdn.chavesgu.com/logo.png');
+                bool res = await ImagesPicker.saveImageToAlbum(file, albumName: "chaves");
                 print(res);
               },
               child: Text('saveNetworkImageToAlbum'),
             ),
             RaisedButton(
               onPressed: () async {
-                File file = await downloadFile(
-                    'https://cdn.chavesgu.com/SampleVideo.mp4');
-                bool res = await ImagesPicker.saveVideoToAlbum(file);
+                File file = await downloadFile('https://cdn.chavesgu.com/SampleVideo.mp4');
+                bool res = await ImagesPicker.saveVideoToAlbum(file, albumName: "chaves");
                 print(res);
               },
               child: Text('saveNetworkVideoToAlbum'),
@@ -104,8 +101,7 @@ class _MyAppState extends State<MyApp> {
   Future<File> downloadFile(String url) async {
     Dio simple = Dio();
     String savePath = Directory.systemTemp.path + '/' + url.split('/').last;
-    await simple.download(url, savePath,
-        options: Options(responseType: ResponseType.bytes));
+    await simple.download(url, savePath, options: Options(responseType: ResponseType.bytes));
     print(savePath);
     File file = new File(savePath);
     return file;

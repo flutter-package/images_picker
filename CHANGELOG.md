@@ -1,3 +1,7 @@
+## 0.0.8
+support custom album name
+fix some android bug
+
 ## 0.0.7
 add ios/android save image/video to album/gallery
 

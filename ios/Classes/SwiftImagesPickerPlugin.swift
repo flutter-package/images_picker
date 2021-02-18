@@ -131,66 +131,103 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
         }
       }
       vc.showDetailViewController(camera, sender: nil);
-    } else if call.method=="saveNetworkImageToAlbum" {
-      let path = call.arguments as! String;
-      if let url = URL(string: path) {
-        var output:Bool = false;
-        let group = DispatchGroup();
-        group.enter();
-        if let data = try? Data(contentsOf: url) {
-          ZLPhotoManager.saveImageToAlbum(image: UIImage(data: data)!, completion: {bool,_ in
-            output = bool;
-            group.leave();
-          });
-        } else {
-          group.leave();
-          output = false;
-        }
-        group.notify(queue: .main) {
-          result(output);
-        }
-      } else {
-        result(false);
-      }
     } else if call.method=="saveImageToAlbum" {
-      let path = call.arguments as! String;
-      ZLPhotoManager.saveImageToAlbum(image: UIImage.init(contentsOfFile: path)!, completion: {bool,_ in
-        result(bool);
-      });
-    } else if call.method=="saveNetworkVideoToAlbum" {
-      let path = call.arguments as! String;
-      if let url = URL(string: path) {
-        var output:Bool = false;
-        let group = DispatchGroup();
-        group.enter();
-        if let data = try? Data(contentsOf: url) {
-          let uuid = UUID().uuidString;
-          let tmpDir = NSTemporaryDirectory();
-          let filename = "\(tmpDir)image_picker_\(uuid).mp4";
-          let fileManager = FileManager.default;
-          fileManager.createFile(atPath: filename, contents: data, attributes: nil);
-          print(filename);
-          ZLPhotoManager.saveVideoToAblum(url: URL(fileURLWithPath: filename), completion: {bool,_ in
-            output = bool;
-            group.leave();
-          });
-        } else {
-          group.leave();
-          output = false;
-        }
-        group.notify(queue: .main) {
-          result(output);
-        }
+      let args = call.arguments as? NSDictionary;
+      let path = args!["path"] as! String;
+      let albumName = args!["albumName"] as? String;
+      let status:PHAuthorizationStatus;
+      if #available(iOS 14, *) {
+        status = PHPhotoLibrary.authorizationStatus(for: .addOnly);
       } else {
+        status = PHPhotoLibrary.authorizationStatus();
+      }
+      if status == .denied || status == .restricted {
         result(false);
+      } else {
+        let assets = self.saveImageToAlbum(image: UIImage.init(contentsOfFile: path)!);
+        if assets != nil && albumName != nil{
+          self.saveAssetToCustomAlbum(assets: assets!, name: albumName!);
+        }
+        result(assets != nil);
       }
     } else if call.method=="saveVideoToAlbum" {
-      let path = call.arguments as! String;
-      ZLPhotoManager.saveVideoToAblum(url: URL(fileURLWithPath: path), completion: {bool,_ in
-        result(bool);
-      });
+      let args = call.arguments as? NSDictionary;
+      let path = args!["path"] as! String;
+      let albumName = args!["albumName"] as? String;
+      let status:PHAuthorizationStatus;
+      if #available(iOS 14, *) {
+        status = PHPhotoLibrary.authorizationStatus(for: .addOnly);
+      } else {
+        status = PHPhotoLibrary.authorizationStatus();
+      }
+      if status == .denied || status == .restricted {
+        result(false);
+      } else {
+        let assets = self.saveVideoToAlbum(url: URL(fileURLWithPath: path));
+        if assets != nil && albumName != nil{
+          self.saveAssetToCustomAlbum(assets: assets!, name: albumName!);
+        }
+        result(assets != nil);
+      }
     } else {
       result(nil);
+    }
+  }
+  
+  // 创建相册
+  private func saveAssetToCustomAlbum(assets: PHFetchResult<PHAsset>, name: String) {
+    var albumCollection:PHAssetCollection?;
+    let albums:PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil);
+    albums.enumerateObjects { (collection, index, _) in
+      if collection.localizedTitle == name {
+        albumCollection = collection;
+      }
+    }
+    if albumCollection == nil {
+      do {
+        var albumId:String = "";
+        try PHPhotoLibrary.shared().performChangesAndWait {
+          albumId = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: name).placeholderForCreatedAssetCollection.localIdentifier;
+        }
+        albumCollection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumId], options: nil).firstObject;
+        print("create custom album: \(albumCollection?.localIdentifier)");
+      } catch {
+      }
+    }
+    if albumCollection != nil {
+      do {
+        try PHPhotoLibrary.shared().performChangesAndWait {
+          let collectionChangeRequest: PHAssetCollectionChangeRequest = PHAssetCollectionChangeRequest(for: albumCollection!)!;
+          collectionChangeRequest.insertAssets(assets, at: [0]);
+        }
+        print("save to custom album");
+      } catch {
+        print(error);
+      }
+    }
+  }
+  // 保存图片到相册
+  private func saveImageToAlbum(image: UIImage)->PHFetchResult<PHAsset>? {
+    do {
+      var assetId:String = "";
+      try PHPhotoLibrary.shared().performChangesAndWait {
+        assetId = PHAssetChangeRequest.creationRequestForAsset(from: image).placeholderForCreatedAsset!.localIdentifier;
+      }
+      return PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil);
+    } catch {
+      return nil;
+    }
+  }
+  // 保存视频到相册
+  private func saveVideoToAlbum(url: URL)->PHFetchResult<PHAsset>? {
+    do {
+      var assetId:String = "";
+      try PHPhotoLibrary.shared().performChangesAndWait {
+        assetId = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)!.placeholderForCreatedAsset!.localIdentifier;
+      }
+      return PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil);
+    } catch {
+      return nil;
     }
   }
 

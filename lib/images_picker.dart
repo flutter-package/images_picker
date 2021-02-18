@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 class ImagesPicker {
-  static const MethodChannel _channel =
-      const MethodChannel('chavesgu/images_picker');
+  static const MethodChannel _channel = const MethodChannel('chavesgu/images_picker');
 
   static Future<List<Media>> pick({
     int count = 1,
@@ -43,8 +42,7 @@ class ImagesPicker {
           Media media = Media();
           media.thumbPath = image["thumbPath"];
           media.path = image["path"];
-          if (image["size"] != null)
-            media.size = (image["size"] / 1024).toDouble();
+          if (image["size"] != null) media.size = (image["size"] / 1024).toDouble();
           return media;
         }).toList();
         return output;
@@ -90,8 +88,7 @@ class ImagesPicker {
           Media media = Media();
           media.thumbPath = image["thumbPath"];
           media.path = image["path"];
-          if (image["size"] != null)
-            media.size = (image["size"] / 1024).toDouble();
+          if (image["size"] != null) media.size = (image["size"] / 1024).toDouble();
           return media;
         }).toList();
         return output;
@@ -103,20 +100,28 @@ class ImagesPicker {
     }
   }
 
-  static Future<bool> saveImageToAlbum(File file) async {
+  static Future<bool> saveImageToAlbum(File file, {String albumName}) async {
     if (file == null) return false;
     try {
-      return await _channel.invokeMethod('saveImageToAlbum', file.path);
+      return await _channel.invokeMethod('saveImageToAlbum', {
+        "path": file.path,
+        "albumName": albumName,
+      });
     } on PlatformException catch (e) {
+      print(e);
       return false;
     }
   }
 
-  static Future<bool> saveVideoToAlbum(File file) async {
+  static Future<bool> saveVideoToAlbum(File file, {String albumName}) async {
     if (file == null) return false;
     try {
-      return await _channel.invokeMethod('saveVideoToAlbum', file.path);
+      return await _channel.invokeMethod('saveVideoToAlbum', {
+        "path": file.path,
+        "albumName": albumName,
+      });
     } on PlatformException catch (e) {
+      print(e);
       return false;
     }
   }

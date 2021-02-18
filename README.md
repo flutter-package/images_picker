@@ -105,8 +105,8 @@ ImagesPicker.pick(
 ```
 - save file to album
 ```dart
-ImagesPicker.saveImageToAlbum(file);
-ImagesPicker.saveVideoToAlbum(file);
+ImagesPicker.saveImageToAlbum(file, albumName: "");
+ImagesPicker.saveVideoToAlbum(file, albumName: "");
 ```
 - save network file to album
 
@@ -114,7 +114,7 @@ ImagesPicker.saveVideoToAlbum(file);
 ```dart
 void save() async {
     File file = await downloadFile('https://xxx.example.com/xx.png');
-    bool res = await ImagesPicker.saveImageToAlbum(file);
+    bool res = await ImagesPicker.saveImageToAlbum(file, albumName: "");
     print(res);
 }
 
@@ -145,10 +145,6 @@ CropOption cropOpt,
 int maxSize,
 double quality,
 ```
-
-### TODO LIST.
-- [x] save image/videos to Photo album
-- [x] use custom themeColor
 
 # License
 MIT License
