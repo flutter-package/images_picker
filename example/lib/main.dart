@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:images_picker/images_picker.dart';
 
 void main() {
@@ -17,7 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String path;
+  String? path;
 
   @override
   void initState() {
@@ -33,12 +32,12 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            RaisedButton(
+            ElevatedButton(
               child: Text('pick'),
               onPressed: () async {
-                List<Media> res = await ImagesPicker.pick(
+                List<Media>? res = await ImagesPicker.pick(
                   count: 3,
-                  // pickType: PickType.video,
+                  pickType: PickType.all,
                   cropOpt: CropOption(
                       // aspectRatio: CropAspectRatio.wh16x9
                       ),
@@ -46,28 +45,28 @@ class _MyAppState extends State<MyApp> {
                 if (res != null) {
                   print(res.map((e) => e.path).toList());
                   setState(() {
-                    path = res[0]?.thumbPath;
+                    path = res[0].thumbPath;
                   });
                   // bool status = await ImagesPicker.saveImageToAlbum(File(res[0]?.path));
                   // print(status);
                 }
               },
             ),
-            RaisedButton(
+            ElevatedButton(
               child: Text('openCamera'),
               onPressed: () async {
-                List<Media> res = await ImagesPicker.openCamera(
-                    // pickType: PickType.video,
-                    );
+                List<Media>? res = await ImagesPicker.openCamera(
+                  pickType: PickType.all,
+                );
                 if (res != null) {
-                  print(res[0]?.path);
+                  print(res[0].path);
                   setState(() {
-                    path = res[0]?.path;
+                    path = res[0].thumbPath;
                   });
                 }
               },
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 File file = await downloadFile('https://cdn.chavesgu.com/logo.png');
                 bool res = await ImagesPicker.saveImageToAlbum(file, albumName: "chaves");
@@ -75,7 +74,7 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('saveNetworkImageToAlbum'),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 File file = await downloadFile('https://cdn.chavesgu.com/SampleVideo.mp4');
                 bool res = await ImagesPicker.saveVideoToAlbum(file, albumName: "chaves");
@@ -87,7 +86,7 @@ class _MyAppState extends State<MyApp> {
                 ? Container(
                     height: 200,
                     child: Image.file(
-                      File(path),
+                      File(path!),
                       fit: BoxFit.contain,
                     ),
                   )

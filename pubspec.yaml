@@ -1,11 +1,11 @@
 name: images_picker
 description: Flutter plugin for selecting images/videos from the Android and iOS image library, and taking pictures/videos with the camera,save image/video to album/gallery.
-version: 0.0.8
+version: 1.0.0
 homepage: https://github.com/chavesgu/images_picker
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.20.0 <2.0.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.5"
 
 dependencies:
   flutter:

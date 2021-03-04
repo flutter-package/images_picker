@@ -2,10 +2,10 @@ PODS:
   - Flutter (1.0.0)
   - images_picker (0.0.1):
     - Flutter
-    - ZLPhotoBrowser (= 4.0.7)
-  - ZLPhotoBrowser (4.0.7):
-    - ZLPhotoBrowser/Core (= 4.0.7)
-  - ZLPhotoBrowser/Core (4.0.7)
+    - ZLPhotoBrowser (= 4.1.3)
+  - ZLPhotoBrowser (4.1.3):
+    - ZLPhotoBrowser/Core (= 4.1.3)
+  - ZLPhotoBrowser/Core (4.1.3)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -22,9 +22,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/images_picker/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  images_picker: 5166ad88297acad3b6bb2b64924da8ad029f2174
-  ZLPhotoBrowser: f85662753ea4cfebff08b3512b17467467634fb2
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  images_picker: eb05ebd660218fba40842f7d26bc75d946c682e5
+  ZLPhotoBrowser: 559062abac47b41ef140cff6ea2370e73623b05f
 
 PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
 

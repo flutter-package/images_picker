@@ -1,3 +1,10 @@
+## 1.0.0
+merge to null-safety
+fix ios PickType.all bug
+
+## 0.0.9
+update ZLPhoto for more languages
+
 ## 0.0.8
 support custom album name
 fix some android bug

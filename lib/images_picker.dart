@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 class ImagesPicker {
   static const MethodChannel _channel = const MethodChannel('chavesgu/images_picker');
 
-  static Future<List<Media>> pick({
+  static Future<List<Media>?> pick({
     int count = 1,
     PickType pickType = PickType.image,
     bool gif = true,
-    CropOption cropOpt,
-    int maxSize,
-    double quality,
+    CropOption? cropOpt,
+    int? maxSize,
+    double? quality,
   }) async {
     assert(count > 0, 'count must > 0');
     if (quality != null) {
@@ -22,7 +22,7 @@ class ImagesPicker {
       assert(maxSize > 0, 'maxSize must > 0');
     }
     try {
-      List<dynamic> res = await _channel.invokeMethod('pick', {
+      List<dynamic>? res = await _channel.invokeMethod('pick', {
         "count": count,
         "pickType": pickType.toString(),
         "gif": gif,
@@ -31,14 +31,14 @@ class ImagesPicker {
         "cropOption": cropOpt != null
             ? {
                 "quality": quality ?? 1,
-                "cropType": cropOpt.cropType?.toString(),
+                "cropType": cropOpt.cropType.toString(),
                 "aspectRatioX": cropOpt.aspectRatio?.aspectRatioX,
                 "aspectRatioY": cropOpt.aspectRatio?.aspectRatioY,
               }
             : null,
       });
-      if (res.length > 0) {
-        List<Media> output = (res ?? []).map((image) {
+      if (res != null) {
+        List<Media> output = res.map((image) {
           Media media = Media();
           media.thumbPath = image["thumbPath"];
           media.path = image["path"];
@@ -54,12 +54,12 @@ class ImagesPicker {
     }
   }
 
-  static Future<List<Media>> openCamera({
+  static Future<List<Media>?> openCamera({
     PickType pickType = PickType.image,
     int maxTime = 15,
-    CropOption cropOpt,
-    int maxSize,
-    double quality,
+    CropOption? cropOpt,
+    int? maxSize,
+    double? quality,
   }) async {
     if (quality != null) {
       assert(quality > 0, 'quality must > 0');
@@ -69,7 +69,7 @@ class ImagesPicker {
       assert(maxSize > 0, 'maxSize must > 0');
     }
     try {
-      List<dynamic> res = await _channel.invokeMethod('openCamera', {
+      List<dynamic>? res = await _channel.invokeMethod('openCamera', {
         "pickType": pickType.toString(),
         "maxTime": maxTime,
         "maxSize": maxSize ?? null,
@@ -77,14 +77,14 @@ class ImagesPicker {
         "cropOption": cropOpt != null
             ? {
                 "quality": quality ?? 1,
-                "cropType": cropOpt.cropType?.toString(),
+                "cropType": cropOpt.cropType.toString(),
                 "aspectRatioX": cropOpt.aspectRatio?.aspectRatioX,
                 "aspectRatioY": cropOpt.aspectRatio?.aspectRatioY,
               }
             : null,
       });
-      if (res.length > 0) {
-        List<Media> output = (res ?? []).map((image) {
+      if (res != null) {
+        List<Media> output = res.map((image) {
           Media media = Media();
           media.thumbPath = image["thumbPath"];
           media.path = image["path"];
@@ -100,8 +100,7 @@ class ImagesPicker {
     }
   }
 
-  static Future<bool> saveImageToAlbum(File file, {String albumName}) async {
-    if (file == null) return false;
+  static Future<bool> saveImageToAlbum(File file, {String? albumName}) async {
     try {
       return await _channel.invokeMethod('saveImageToAlbum', {
         "path": file.path,
@@ -113,8 +112,7 @@ class ImagesPicker {
     }
   }
 
-  static Future<bool> saveVideoToAlbum(File file, {String albumName}) async {
-    if (file == null) return false;
+  static Future<bool> saveVideoToAlbum(File file, {String? albumName}) async {
     try {
       return await _channel.invokeMethod('saveVideoToAlbum', {
         "path": file.path,
@@ -157,7 +155,7 @@ class CropAspectRatio {
 
 class CropOption {
   final CropType cropType;
-  final CropAspectRatio aspectRatio;
+  final CropAspectRatio? aspectRatio;
 
   CropOption({
     this.aspectRatio = CropAspectRatio.custom,
@@ -168,14 +166,14 @@ class CropOption {
 class Media {
   ///视频缩略图图片路径
   ///Video thumbnail image path
-  String thumbPath;
+  String? thumbPath;
 
   ///视频路径或图片路径
   ///Video path or image path
-  String path;
+  String? path;
 
   /// 文件大小
-  double size;
+  double? size;
 
   Media({
     this.path,

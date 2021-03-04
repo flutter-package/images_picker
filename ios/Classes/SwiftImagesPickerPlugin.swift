@@ -49,33 +49,26 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
 
       ac.selectImageBlock = { (images, assets, isOriginal) in
         let manager = PHImageManager.default();
-        if pickType=="PickType.image" { // 解析图片
-          let group = DispatchGroup();
-          for (index, image) in images.enumerated() {
-            let asset = assets[index];
-            group.enter();
+        let options = PHVideoRequestOptions();
+        options.isNetworkAccessAllowed = true;
+        options.deliveryMode = .automatic;
+        options.version = .original;
+        
+        let group = DispatchGroup();
+        for (index, asset) in assets.enumerated() {
+          group.enter();
+          if asset.mediaType==PHAssetMediaType.image {
+            let image = images[index];
             if self.getImageType(asset: asset)=="gif" && supportGif { // gif 取原路径
               self.resolveImage(asset: asset, resultHandler: { dir in
                 resArr.append(dir);
                 group.leave();
-              })
+              });
             } else {
               resArr.append(self.resolveImage(image: image, maxSize: maxSize));
               group.leave();
             }
-          }
-          group.notify(queue: .main) {
-            result(resArr);
-          }
-        } else if pickType=="PickType.video" { // 解析视频
-          let group = DispatchGroup();
-          let options = PHVideoRequestOptions()
-          options.isNetworkAccessAllowed = true
-          options.deliveryMode = .automatic
-          options.version = .original
-          for asset in assets {
-            // requestAVAsset
-            group.enter();
+          } else if asset.mediaType==PHAssetMediaType.video {
             manager.requestAVAsset(forVideo: asset, options: options, resultHandler: { avasset,audioMix,info  in
               let videoUrl = avasset as! AVURLAsset;
               let url = videoUrl.url;
@@ -83,12 +76,12 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
               resArr.append(self.resolveVideo(url: url));
               group.leave();
             })
+          } else {
+            group.leave();
           }
-          group.notify(queue: .main) {
-            result(resArr);
-          }
-        } else {
-          result(nil);
+        }
+        group.notify(queue: .main) {
+          result(resArr);
         }
       }
       ac.showPhotoLibrary(sender: vc);
@@ -112,22 +105,16 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       }
 
       camera.takeDoneBlock = { (image, url) in
-        if pickType=="PickType.image" {
-          if let image = image {
-            var resArr = [[String: StringOrInt]]();
-            resArr.append(self.resolveImage(image: image, maxSize: maxSize));
-            result(resArr);
-          } else {
-            result(nil);
-          }
-        } else if pickType=="PickType.video" {
-          if let url = url {
-            var resArr = [[String: StringOrInt]]();
-            resArr.append(self.resolveVideo(url: url));
-            result(resArr);
-          } else {
-            result(nil);
-          }
+        if let image = image {
+          var resArr = [[String: StringOrInt]]();
+          resArr.append(self.resolveImage(image: image, maxSize: maxSize));
+          result(resArr);
+        } else if let url = url {
+          var resArr = [[String: StringOrInt]]();
+          resArr.append(self.resolveVideo(url: url));
+          result(resArr);
+        } else {
+          result(nil);
         }
       }
       vc.showDetailViewController(camera, sender: nil);
@@ -190,7 +177,6 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
           albumId = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: name).placeholderForCreatedAssetCollection.localIdentifier;
         }
         albumCollection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumId], options: nil).firstObject;
-        print("create custom album: \(albumCollection?.localIdentifier)");
       } catch {
       }
     }
