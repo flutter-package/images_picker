@@ -1,3 +1,6 @@
+## 1.1.0
+add language prop to set language
+
 ## 1.0.0
 merge to null-safety
 fix ios PickType.all bug

@@ -19,11 +19,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import static java.io.File.separator;
 
 public class FileSaver {
-    static boolean saveVideo(Context context, String filePath, @Nullable  String albumName) {
+    static boolean saveVideo(@NonNull Context context, String filePath, @Nullable  String albumName) {
         boolean saveRes = false;
         String folderName = context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
         if (albumName!=null) folderName = albumName;
@@ -70,7 +71,7 @@ public class FileSaver {
         return saveRes;
     }
 
-    static boolean saveImage(Context context, Bitmap bitmap,String suffix, @Nullable String albumName) {
+    static boolean saveImage(@NonNull Context context, Bitmap bitmap,String suffix, @Nullable String albumName) {
         boolean saveRes = false;
         String folderName = context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
         if (albumName!=null) folderName = albumName;
@@ -116,7 +117,7 @@ public class FileSaver {
         return saveRes;
     }
 
-    static ContentValues contentValues(String suffix){
+    static ContentValues contentValues(@NonNull String suffix){
         ContentValues values = new ContentValues();
         String type = "images/"+suffix;
         if (suffix.equals("jpg") || suffix.equals("jpeg")) {
@@ -127,7 +128,7 @@ public class FileSaver {
         return values;
     }
 
-    static Boolean saveVideoToStream(Context context, String filePath, OutputStream out) {
+    static Boolean saveVideoToStream(@NonNull Context context, String filePath, OutputStream out) {
         try {
             File videoFile = new File(filePath);
             InputStream in = new FileInputStream(videoFile);

@@ -53,6 +53,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.language.LanguageConfig;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.yalantis.ucrop.util.FileUtils;
@@ -133,6 +134,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         double quality = call.argument("quality");
         boolean supportGif = call.argument("gif");
         HashMap<String, Object> cropOption = call.argument("cropOption");
+        String language = call.argument("language");
 
         int chooseType;
         switch (pickType) {
@@ -148,6 +150,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         }
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openGallery(chooseType);
+        Utils.setLanguage(model, language);
         Utils.setPhotoSelectOpt(model, count, quality);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
         model.isGif(supportGif);
@@ -159,10 +162,13 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         int maxTime = call.argument("maxTime");
         double quality = call.argument("quality");
         HashMap<String, Object> cropOption = call.argument("cropOption");
+        String language = call.argument("language");
+
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openCamera(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
         model.setOutputCameraPath(context.getExternalCacheDir().getAbsolutePath());
         model.recordVideoSecond(maxTime);
+        Utils.setLanguage(model, language);
         Utils.setPhotoSelectOpt(model, 1, quality);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
         resolveMedias(model);
@@ -249,6 +255,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
       @Override
       public void onCancel() {
         // 取消
+        _result.success(null);
       }
     });
   }

@@ -103,6 +103,13 @@ ImagesPicker.pick(
   maxSize: 500, // only for ios (kb)
 );
 ```
+- set language
+```dart
+ImagesPicker.pick(
+  language: Language.English,
+// you can set Language.System for following phone language
+)
+```
 - save file to album
 ```dart
 ImagesPicker.saveImageToAlbum(file, albumName: "");
