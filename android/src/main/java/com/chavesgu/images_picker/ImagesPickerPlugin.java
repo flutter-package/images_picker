@@ -38,6 +38,7 @@ import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -316,7 +317,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
 
   private void saveImageToGallery(final String path, String albumName) {
     boolean status = false;
-    String suffix = path.substring(path.lastIndexOf('.'));
+    String suffix = path.substring(path.lastIndexOf('.')+1);
     Bitmap bitmap = BitmapFactory.decodeFile(path);
     status = FileSaver.saveImage(context, bitmap, suffix, albumName);
     _result.success(status);
@@ -328,7 +329,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
 
   private boolean hasPermission() {
     return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-            (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED && activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED);
+            (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED);
   }
 
     @Override

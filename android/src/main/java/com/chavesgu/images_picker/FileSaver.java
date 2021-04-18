@@ -119,9 +119,9 @@ public class FileSaver {
 
     static ContentValues contentValues(@NonNull String suffix){
         ContentValues values = new ContentValues();
-        String type = "images/"+suffix;
+        String type = "image/"+suffix;
         if (suffix.equals("jpg") || suffix.equals("jpeg")) {
-            type = "images/jpeg";
+            type = "image/jpeg";
         }
         values.put(MediaStore.Images.Media.MIME_TYPE, type);
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000);

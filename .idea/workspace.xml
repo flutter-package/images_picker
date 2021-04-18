@@ -11,27 +11,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed9556d7-7535-4fa7-9e3b-9dd66fa7a9e0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/FileSaver.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/FileSaver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/ImagesPickerPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/ImagesPickerPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/chavesgu/images_picker/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/FileSaver.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/FileSaver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/ImagesPickerPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/ImagesPickerPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/android/src/main/java/com/chavesgu/images_picker/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/ios/Classes/SwiftImagesPickerPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/ios/Classes/SwiftImagesPickerPlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/images_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/lib/images_picker.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftImagesPickerPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftImagesPickerPlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/images_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/images_picker.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/ios/images_picker.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/ios/images_picker.podspec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/images_picker/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/images_picker.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/images_picker.podspec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
