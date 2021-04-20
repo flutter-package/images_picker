@@ -1,3 +1,5 @@
+## 1.2.0
+fix android save bug
 ## 1.1.0
 add language prop to set language
 
