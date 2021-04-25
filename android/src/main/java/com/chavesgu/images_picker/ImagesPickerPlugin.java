@@ -223,7 +223,6 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         // 结果回调
         List<Object> resArr = new ArrayList<Object>();
         for (LocalMedia media:medias) {
-          Log.i("media mimeType", media.getMimeType());
           HashMap<String, Object> map = new HashMap<String, Object>();
           String path = media.getPath();
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

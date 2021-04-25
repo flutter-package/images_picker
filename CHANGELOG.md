@@ -1,3 +1,5 @@
+## 1.2.1
+update important readme
 ## 1.2.0
 fix android save bug
 ## 1.1.0
