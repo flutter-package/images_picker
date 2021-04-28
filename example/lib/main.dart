@@ -39,9 +39,10 @@ class _MyAppState extends State<MyApp> {
                   count: 3,
                   pickType: PickType.all,
                   language: Language.System,
+                  // maxSize: 500,
                   cropOpt: CropOption(
-                      // aspectRatio: CropAspectRatio.wh16x9
-                      ),
+                    aspectRatio: CropAspectRatio.wh16x9,
+                  ),
                 );
                 if (res != null) {
                   print(res.map((e) => e.path).toList());
@@ -58,6 +59,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 List<Media>? res = await ImagesPicker.openCamera(
                   pickType: PickType.all,
+                  maxTime: 60,
                 );
                 if (res != null) {
                   print(res[0].path);

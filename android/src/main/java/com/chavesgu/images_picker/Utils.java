@@ -33,7 +33,7 @@ public class Utils {
                 .isReturnEmpty(false)
                 .isAndroidQTransform(true)
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                .isOriginalImageControl(true)
+                .isOriginalImageControl(false)
                 .isMaxSelectEnabledMask(true);
         if (quality < 0) model.isCompress(false);
         return model;
@@ -52,7 +52,10 @@ public class Utils {
                 .hideBottomControls(false)
                 .isMultipleSkipCrop(true)
                 .compressFocusAlpha(true)
-                .cutOutQuality(100);
+                .cutOutQuality(100)
+                .cameraFileName("images_picker_camera")
+                .renameCompressFile("images_picker_compress")
+                .renameCropFileName("images_picker_crop");
         if (opt.get("aspectRatioX") != null) {
             model.isDragFrame(false);
             model.withAspectRatio((int) opt.get("aspectRatioX"), (int) opt.get("aspectRatioY"));

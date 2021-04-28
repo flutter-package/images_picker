@@ -165,8 +165,18 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         HashMap<String, Object> cropOption = call.argument("cropOption");
         String language = call.argument("language");
 
+        int chooseType;
+        switch (pickType) {
+          case "PickType.image":
+            chooseType = PictureMimeType.ofImage();
+            break;
+          default:
+            chooseType = PictureMimeType.ofVideo();
+            break;
+        }
+
         PictureSelectionModel model = PictureSelector.create(activity)
-                .openCamera(pickType.equals("PickType.video") ? PictureMimeType.ofVideo() : PictureMimeType.ofImage());
+                .openCamera(chooseType);
         model.setOutputCameraPath(context.getExternalCacheDir().getAbsolutePath());
         model.recordVideoSecond(maxTime);
         Utils.setLanguage(model, language);
@@ -219,38 +229,49 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
   private void resolveMedias(PictureSelectionModel model) {
     model.forResult(new OnResultCallbackListener<LocalMedia>() {
       @Override
-      public void onResult(List<LocalMedia> medias) {
+      public void onResult(final List<LocalMedia> medias) {
         // 结果回调
-        List<Object> resArr = new ArrayList<Object>();
-        for (LocalMedia media:medias) {
-          HashMap<String, Object> map = new HashMap<String, Object>();
-          String path = media.getPath();
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            path = media.getAndroidQToPath();
+        new Thread() {
+          @Override
+          public void run() {
+            final List<Object> resArr = new ArrayList<Object>();
+            for (LocalMedia media:medias) {
+              HashMap<String, Object> map = new HashMap<String, Object>();
+              String path = media.getPath();
+              Log.i("images_picker", path);
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                path = media.getAndroidQToPath();
+              }
+              if (media.isCut()) path = media.getCutPath();
+              if (media.isCompressed()) path = media.getCompressPath();
+//              path = copyToTmp(path);
+              map.put("path", path);
+
+              String thumbPath;
+              if (media.getMimeType().contains("image")) {
+                thumbPath = path;
+              } else {
+                thumbPath = createVideoThumb(path);
+              }
+              map.put("thumbPath", thumbPath);
+
+              int size = getFileSize(path);
+              map.put("size", size);
+
+              resArr.add(map);
+            }
+
+//            PictureFileUtils.deleteCacheDirFile(context, type);
+//            PictureFileUtils.deleteAllCacheDirFile(context);
+
+            new Handler(context.getMainLooper()).post(new Runnable() {
+              @Override
+              public void run() {
+                _result.success(resArr);
+              }
+            });
           }
-          if (media.isCut()) path = media.getCutPath();
-          if (media.isCompressed()) path = media.getCompressPath();
-          path = copyToTmp(path);
-          map.put("path", path);
-
-          String thumbPath;
-          if (media.getMimeType().contains("image")) {
-            thumbPath = path;
-          } else {
-            thumbPath = createVideoThumb(path);
-          }
-          map.put("thumbPath", thumbPath);
-
-          int size = getFileSize(path);
-          map.put("size", size);
-
-          resArr.add(map);
-        }
-
-//          PictureFileUtils.deleteCacheDirFile(context, type);
-        PictureFileUtils.deleteAllCacheDirFile(context);
-
-        _result.success(resArr);
+        }.start();
       }
       @Override
       public void onCancel() {
