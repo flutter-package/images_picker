@@ -1,5 +1,7 @@
 # images_picker
 
+[![images-picker](https://img.shields.io/badge/pub-1.2.2-orange)](https://pub.dev/packages/images_picker)
+
 Flutter plugin for selecting images/videos from the Android and iOS image library, and taking pictures/videos with the camera,save image/video to album/gallery
 
 ios(10+): [ZLPhotoBrowser](https://github.com/longitachi/ZLPhotoBrowser)
