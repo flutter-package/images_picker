@@ -238,7 +238,6 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
             for (LocalMedia media:medias) {
               HashMap<String, Object> map = new HashMap<String, Object>();
               String path = media.getPath();
-              Log.i("images_picker", path);
               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 path = media.getAndroidQToPath();
               }
@@ -295,7 +294,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return "";
+    return null;
   }
 
   private int getFileSize(String path) {

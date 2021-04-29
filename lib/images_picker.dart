@@ -42,11 +42,11 @@ class ImagesPicker {
       });
       if (res != null) {
         List<Media> output = res.map((image) {
-          Media media = Media();
-          media.thumbPath = image["thumbPath"];
-          media.path = image["path"];
-          if (image["size"] != null)
-            media.size = (image["size"] / 1024).toDouble();
+          Media media = Media(
+            path: image["path"],
+            size: ((image["size"] ?? 0) / 1024).toDouble(),
+            thumbPath: image["thumbPath"],
+          );
           return media;
         }).toList();
         return output;
@@ -90,11 +90,11 @@ class ImagesPicker {
       });
       if (res != null) {
         List<Media> output = res.map((image) {
-          Media media = Media();
-          media.thumbPath = image["thumbPath"];
-          media.path = image["path"];
-          if (image["size"] != null)
-            media.size = (image["size"] / 1024).toDouble();
+          Media media = Media(
+            path: image["path"],
+            size: ((image["size"] ?? 0) / 1024).toDouble(),
+            thumbPath: image["thumbPath"],
+          );
           return media;
         }).toList();
         return output;
@@ -187,14 +187,14 @@ class Media {
 
   ///视频路径或图片路径
   ///Video path or image path
-  String? path;
+  String path;
 
   /// 文件大小
-  double? size;
+  double size;
 
   Media({
-    this.path,
+    required this.path,
     this.thumbPath,
-    this.size,
+    required this.size,
   });
 }

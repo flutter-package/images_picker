@@ -26,16 +26,20 @@ public class Utils {
                 .isZoomAnim(true)
                 .isGif(true)
                 .isEnableCrop(false)
-                .isCompress(true)
+                .isCompress(false)
                 .compressFocusAlpha(true)
                 .minimumCompressSize(100)
-                .compressQuality((int) ((double) quality * 100))
                 .isReturnEmpty(false)
                 .isAndroidQTransform(true)
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .isOriginalImageControl(false)
-                .isMaxSelectEnabledMask(true);
-        if (quality < 0) model.isCompress(false);
+                .isMaxSelectEnabledMask(true)
+                .cameraFileName("images_picker_camera")
+                .renameCompressFile("images_picker_compress")
+                .renameCropFileName("images_picker_crop");
+        if (quality > 0) {
+            model.isCompress(true).compressQuality((int) ((double) quality * 100));
+        }
         return model;
     }
 
@@ -52,10 +56,7 @@ public class Utils {
                 .hideBottomControls(false)
                 .isMultipleSkipCrop(true)
                 .compressFocusAlpha(true)
-                .cutOutQuality(100)
-                .cameraFileName("images_picker_camera")
-                .renameCompressFile("images_picker_compress")
-                .renameCropFileName("images_picker_crop");
+                .cutOutQuality((int) opt.get("quality") * 100);
         if (opt.get("aspectRatioX") != null) {
             model.isDragFrame(false);
             model.withAspectRatio((int) opt.get("aspectRatioX"), (int) opt.get("aspectRatioY"));

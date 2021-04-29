@@ -276,10 +276,12 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     let path = (urlStr as NSString).substring(from: 7);
     dir.updateValue(path, forKey: "path");
     
-    let thumb = self.getVideoThumbPath(url: path); // 获取视频封面图
-    let thumbData = thumb?.jpegData(compressionQuality: 1); // 转Data
-    let thumbPath = self.createFile(data: thumbData); // 写入封面图
-    dir.updateValue(thumbPath, forKey: "thumbPath");
+    // 获取视频封面图
+    if let thumb = self.getVideoThumbPath(url: path) {
+      let thumbData = thumb.jpegData(compressionQuality: 1); // 转Data
+      let thumbPath = self.createFile(data: thumbData); // 写入封面图
+      dir.updateValue(thumbPath, forKey: "thumbPath");
+    }
     do {
       let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize;
       dir.updateValue((size ?? 0) as Int, forKey: "size");
