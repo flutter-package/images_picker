@@ -34,9 +34,10 @@ public class Utils {
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .isOriginalImageControl(false)
                 .isMaxSelectEnabledMask(true)
-                .cameraFileName("images_picker_camera")
-                .renameCompressFile("images_picker_compress")
-                .renameCropFileName("images_picker_crop");
+//                .cameraFileName("images_picker_camera")
+//                .renameCompressFile("images_picker_compress")
+//                .renameCropFileName("images_picker_crop")
+        ;
         if (quality > 0) {
             model.isCompress(true).compressQuality((int) ((double) quality * 100));
         }
@@ -56,7 +57,7 @@ public class Utils {
                 .hideBottomControls(false)
                 .isMultipleSkipCrop(true)
                 .compressFocusAlpha(true)
-                .cutOutQuality((int) opt.get("quality") * 100);
+                .cutOutQuality((int) ((double) opt.get("quality") * 100));
         if (opt.get("aspectRatioX") != null) {
             model.isDragFrame(false);
             model.withAspectRatio((int) opt.get("aspectRatioX"), (int) opt.get("aspectRatioY"));
