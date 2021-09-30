@@ -30,6 +30,7 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       let maxSize = args!["maxSize"] as? Int;
       let cropOption = args!["cropOption"] as? NSDictionary;
       let theme = args!["theme"] as? NSDictionary;
+      let maxVideoDuration = args!["maxVideoDuration"] as! Int;
       
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let ac = ZLPhotoPreviewSheet();
@@ -38,6 +39,7 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       self.setConfig(configuration: config, pickType: pickType);
       config.maxSelectCount = count;
       config.allowSelectGif = supportGif;
+      config.maxSelectVideoDuration = maxVideoDuration;
       if cropOption != nil {
         config.allowEditImage = true;
         if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
