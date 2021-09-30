@@ -6,15 +6,18 @@ class ImagesPicker {
   static const MethodChannel _channel =
       const MethodChannel('chavesgu/images_picker');
 
-  static Future<List<Media>?> pick({
-    int count = 1,
-    PickType pickType = PickType.image,
-    bool gif = true,
-    CropOption? cropOpt,
-    int? maxSize,
-    double? quality,
-    Language language = Language.System,
-  }) async {
+  static Future<List<Media>?> pick(
+      {int count = 1,
+      PickType pickType = PickType.image,
+      bool gif = true,
+      CropOption? cropOpt,
+      int? maxSize,
+      double? quality,
+      Language language = Language.System,
+      int maxVideoDuration = 120
+
+      ///视频最大的长度，默认是120秒
+      }) async {
     assert(count > 0, 'count must > 0');
     if (quality != null) {
       assert(quality > 0, 'quality must > 0');
@@ -22,6 +25,9 @@ class ImagesPicker {
     }
     if (maxSize != null) {
       assert(maxSize > 0, 'maxSize must > 0');
+    }
+    if (maxVideoDuration == null) {
+      maxVideoDuration = 120;
     }
     try {
       List<dynamic>? res = await _channel.invokeMethod('pick', {
@@ -39,6 +45,7 @@ class ImagesPicker {
               }
             : null,
         "language": language.toString(),
+        "maxVideoDuration": maxVideoDuration
       });
       if (res != null) {
         List<Media> output = res.map((image) {
