@@ -36,14 +36,14 @@ class _MyAppState extends State<MyApp> {
               child: Text('pick'),
               onPressed: () async {
                 List<Media>? res = await ImagesPicker.pick(
-                  count: 3,
-                  pickType: PickType.all,
-                  language: Language.System,
-                  // maxSize: 500,
-                  cropOpt: CropOption(
-                    aspectRatio: CropAspectRatio.wh16x9,
-                  ),
-                );
+                    count: 3,
+                    pickType: PickType.all,
+                    language: Language.System,
+                    // maxSize: 500,
+                    cropOpt: CropOption(
+                      aspectRatio: CropAspectRatio.wh16x9,
+                    ),
+                    maxVideoDuration: 300);
                 if (res != null) {
                   print(res.map((e) => e.path).toList());
                   setState(() {
