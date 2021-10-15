@@ -34,6 +34,12 @@ For android:
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
+
+```
+Goto android/app/build.gradle
+minSdkVersion 21
+```
+
 And,
 ```yaml
 images_picker: ^newest
