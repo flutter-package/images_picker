@@ -1,3 +1,5 @@
+## 1.2.5
+update ZLPhotoBrowser and PictureSelector
 ## 1.2.4
 fix
 ## 1.2.3

@@ -40,8 +40,13 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       config.allowSelectGif = supportGif;
       if cropOption != nil {
         config.allowEditImage = true;
-        if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
-          config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+        let corpType = cropOption!["cropType"] as! String;
+        if (corpType=="CropType.circle") {
+          config.editImageClipRatios = [ZLImageClipRatio.circle];
+        } else {
+          if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
+            config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+          }
         }
       }
       
@@ -96,9 +101,11 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       let cropOption = args!["cropOption"] as? NSDictionary;
       let maxSize = args!["maxSize"] as? Int;
       let maxTime = args!["maxTime"] as? Int;
+      let theme = args!["theme"] as? NSDictionary;
       
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let camera = ZLCustomCamera();
+      let cameraConfig = ZLCameraConfiguration();
       let config = ZLPhotoConfiguration.default();
       config.maxRecordDuration = maxTime ?? 15;
       self.setLanguage(configuration: config, language: language);
@@ -109,6 +116,8 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
           config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
         }
       }
+      
+      self.setThemeColor(configuration: config, colors: theme);
       
       camera.takeDoneBlock = { (image, url) in
         if let image = image {
@@ -439,7 +448,6 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       configuration.allowSelectVideo = false;
     }
     configuration.allowSlideSelect = false;
-    configuration.videoExportType = ZLCustomCamera.VideoExportType.mp4;
   }
   
   private func setLanguage(configuration: ZLPhotoConfiguration, language: String) {
@@ -475,6 +483,6 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
   
   private func setThemeColor(configuration: ZLPhotoConfiguration, colors: NSDictionary?) {
     let theme = ZLPhotoThemeColorDeploy();
-    configuration.themeColorDeploy = theme;
+//    configuration.themeColorDeploy = theme;
   }
 }

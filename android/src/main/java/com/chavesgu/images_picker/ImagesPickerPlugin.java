@@ -57,7 +57,6 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.language.LanguageConfig;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.PictureFileUtils;
-import com.yalantis.ucrop.util.FileUtils;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -241,8 +240,13 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 path = media.getAndroidQToPath();
               }
-              if (media.isCut()) path = media.getCutPath();
-              if (media.isCompressed()) path = media.getCompressPath();
+
+//              if (media.isCut()) path = media.getCutPath();
+//              if (media.isCompressed()) path = media.getCompressPath();
+              if (media.getMimeType().contains("image")) {
+                if (media.isCut()) path = media.getCutPath();
+                if (media.isCompressed()) path = media.getCompressPath();
+              }
 //              path = copyToTmp(path);
               map.put("path", path);
 
@@ -257,6 +261,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
               int size = getFileSize(path);
               map.put("size", size);
 
+              Log.i("pick test", map.toString());
               resArr.add(map);
             }
 

@@ -58,12 +58,12 @@ class _MyAppState extends State<MyApp> {
               child: Text('openCamera'),
               onPressed: () async {
                 List<Media>? res = await ImagesPicker.openCamera(
-                  pickType: PickType.image,
-                  quality: 0.5,
+                  pickType: PickType.video,
+                  // quality: 0.5,
                   // cropOpt: CropOption(
                   //   aspectRatio: CropAspectRatio.wh16x9,
                   // ),
-                  // maxTime: 60,
+                  maxTime: 15,
                 );
                 if (res != null) {
                   print(res[0].path);
