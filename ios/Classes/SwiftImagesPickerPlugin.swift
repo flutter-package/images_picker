@@ -132,6 +132,9 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
           result(nil);
         }
       }
+      camera.cancelBlock = { () in
+        result(nil);
+      };
       vc.showDetailViewController(camera, sender: nil);
     } else if call.method=="saveImageToAlbum" {
       let args = call.arguments as? NSDictionary;

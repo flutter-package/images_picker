@@ -1,3 +1,5 @@
+## 1.2.6
+fix ios openCamera no cancel callback
 ## 1.2.5
 update ZLPhotoBrowser and PictureSelector
 ## 1.2.4

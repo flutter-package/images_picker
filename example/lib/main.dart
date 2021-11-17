@@ -44,6 +44,7 @@ class _MyAppState extends State<MyApp> {
                     aspectRatio: CropAspectRatio.wh16x9,
                   ),
                 );
+                print(res);
                 if (res != null) {
                   print(res.map((e) => e.path).toList());
                   setState(() {
@@ -58,13 +59,15 @@ class _MyAppState extends State<MyApp> {
               child: Text('openCamera'),
               onPressed: () async {
                 List<Media>? res = await ImagesPicker.openCamera(
-                  pickType: PickType.video,
+                  // pickType: PickType.video,
+                  pickType: PickType.image,
                   // quality: 0.5,
                   // cropOpt: CropOption(
                   //   aspectRatio: CropAspectRatio.wh16x9,
                   // ),
                   maxTime: 15,
                 );
+                print(res);
                 if (res != null) {
                   print(res[0].path);
                   setState(() {
