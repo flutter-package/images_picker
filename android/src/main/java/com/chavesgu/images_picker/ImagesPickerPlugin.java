@@ -164,7 +164,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         HashMap<String, Object> cropOption = call.argument("cropOption");
         String language = call.argument("language");
 
-        int chooseType;
+        int chooseType = PictureMimeType.ofVideo();
         switch (pickType) {
           case "PickType.image":
             chooseType = PictureMimeType.ofImage();
@@ -291,7 +291,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
     try {
       File outputDir = context.getCacheDir();
-      File outputFile = File.createTempFile("image_picker_"+ UUID.randomUUID().toString(), ".jpg", outputDir);
+      File outputFile = File.createTempFile("image_picker_thumb_"+ UUID.randomUUID().toString(), ".jpg", outputDir);
       FileOutputStream fo = new FileOutputStream(outputFile);
       fo.write(bytes.toByteArray());
       fo.close();

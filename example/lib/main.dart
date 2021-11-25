@@ -40,9 +40,9 @@ class _MyAppState extends State<MyApp> {
                   pickType: PickType.all,
                   language: Language.System,
                   // maxSize: 500,
-                  cropOpt: CropOption(
-                    aspectRatio: CropAspectRatio.wh16x9,
-                  ),
+                  // cropOpt: CropOption(
+                  //   aspectRatio: CropAspectRatio.wh16x9,
+                  // ),
                 );
                 print(res);
                 if (res != null) {
@@ -61,7 +61,8 @@ class _MyAppState extends State<MyApp> {
                 List<Media>? res = await ImagesPicker.openCamera(
                   // pickType: PickType.video,
                   pickType: PickType.image,
-                  // quality: 0.5,
+                  quality: 0.8,
+                  maxSize: 800,
                   // cropOpt: CropOption(
                   //   aspectRatio: CropAspectRatio.wh16x9,
                   // ),

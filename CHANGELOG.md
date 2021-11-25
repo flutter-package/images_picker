@@ -1,3 +1,5 @@
+## 1.2.7
+fix android filename error
 ## 1.2.6
 fix ios openCamera no cancel callback
 ## 1.2.5

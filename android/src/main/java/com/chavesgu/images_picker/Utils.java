@@ -35,9 +35,9 @@ public class Utils {
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .isOriginalImageControl(false)
                 .isMaxSelectEnabledMask(true)
-//                .cameraFileName(UUID.randomUUID().toString())
-//                .renameCompressFile("images_picker_compress")
-//                .renameCropFileName("images_picker_crop")
+                .cameraFileName("image_picker_camera_"+UUID.randomUUID().toString()+".jpg")
+                .renameCompressFile("image_picker_compress_"+UUID.randomUUID().toString()+".jpg")
+                .renameCropFileName("image_picker_crop_"+UUID.randomUUID().toString()+".jpg")
         ;
         if (quality > 0) {
             model.isCompress(true).compressQuality((int) ((double) quality * 100));
