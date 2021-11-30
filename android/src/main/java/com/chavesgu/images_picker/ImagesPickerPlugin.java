@@ -177,6 +177,11 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         PictureSelectionModel model = PictureSelector.create(activity)
                 .openCamera(chooseType);
         model.setOutputCameraPath(context.getExternalCacheDir().getAbsolutePath());
+        if (pickType.equals("PickType.image")) {
+          model.cameraFileName("image_picker_camera_"+UUID.randomUUID().toString()+".jpg");
+        } else {
+          model.cameraFileName("image_picker_camera_"+UUID.randomUUID().toString()+".mp4");
+        }
         model.recordVideoSecond(maxTime);
         Utils.setLanguage(model, language);
         Utils.setPhotoSelectOpt(model, 1, quality);

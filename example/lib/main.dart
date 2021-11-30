@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 List<Media>? res = await ImagesPicker.openCamera(
                   // pickType: PickType.video,
-                  pickType: PickType.image,
+                  pickType: PickType.all,
                   quality: 0.8,
                   maxSize: 800,
                   // cropOpt: CropOption(

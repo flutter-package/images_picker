@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import com.luck.picture.lib.PictureSelectionModel;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.language.LanguageConfig;
 import com.yalantis.ucrop.view.OverlayView;
 
@@ -35,9 +36,11 @@ public class Utils {
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .isOriginalImageControl(false)
                 .isMaxSelectEnabledMask(true)
-                .cameraFileName("image_picker_camera_"+UUID.randomUUID().toString()+".jpg")
+                .setCameraImageFormat(PictureMimeType.JPEG)
+                .setCameraVideoFormat(PictureMimeType.MP4)
                 .renameCompressFile("image_picker_compress_"+UUID.randomUUID().toString()+".jpg")
                 .renameCropFileName("image_picker_crop_"+UUID.randomUUID().toString()+".jpg")
+//                .cameraFileName("image_picker_camera_"+UUID.randomUUID().toString()+".jpg")
         ;
         if (quality > 0) {
             model.isCompress(true).compressQuality((int) ((double) quality * 100));
