@@ -1,6 +1,6 @@
 # images_picker
 
-[![images-picker](https://img.shields.io/badge/pub-1.2.8-orange)](https://pub.dev/packages/images_picker)
+[![images-picker](https://img.shields.io/badge/pub-1.2.9-orange)](https://pub.dev/packages/images_picker)
 
 Flutter plugin for selecting images/videos from the Android and iOS image library, and taking pictures/videos with the camera,save image/video to album/gallery
 
@@ -91,6 +91,13 @@ ImagesPicker.pick(
   gif: true, // default is true
 );
 ```
+- add max video duration pick
+```dart
+ImagesPicker.pick(
+  // ...
+  maxTime: 30, // second
+);
+```
 - add cropper (gif crop unsupported)
 ```dart
 ImagesPicker.pick(
@@ -149,6 +156,7 @@ Future<File> downloadFile(String url) async {
 int count = 1,
 PickType pickType = PickType.image,
 bool gif = true,
+int maxTime = 120,
 CropOption cropOpt,
 int maxSize,
 double quality,

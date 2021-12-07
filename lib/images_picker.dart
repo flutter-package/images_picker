@@ -10,6 +10,7 @@ class ImagesPicker {
     int count = 1,
     PickType pickType = PickType.image,
     bool gif = true,
+    int maxTime = 120,
     CropOption? cropOpt,
     int? maxSize,
     double? quality,
@@ -28,6 +29,7 @@ class ImagesPicker {
         "count": count,
         "pickType": pickType.toString(),
         "gif": gif,
+        "maxTime": maxTime,
         "maxSize": maxSize ?? null,
         "quality": quality ?? -1,
         "cropOption": cropOpt != null

@@ -1,3 +1,5 @@
+## 1.2.9
+add maxTime for pick video
 ## 1.2.8
 fix android filename error
 ## 1.2.7

@@ -133,6 +133,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         String pickType = call.argument("pickType");
         double quality = call.argument("quality");
         boolean supportGif = call.argument("gif");
+        int maxTime = call.argument("maxTime");
         HashMap<String, Object> cropOption = call.argument("cropOption");
         String language = call.argument("language");
 
@@ -154,6 +155,7 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
         Utils.setPhotoSelectOpt(model, count, quality);
         if (cropOption!=null) Utils.setCropOpt(model, cropOption);
         model.isGif(supportGif);
+        model.videoMaxSecond(maxTime);
         resolveMedias(model);
         break;
       }
