@@ -103,50 +103,6 @@ public class GlideEngine implements ImageEngine {
     }
 
     /**
-     * 加载网络图片适配长图方案
-     * # 注意：此方法只有加载网络图片才会回调
-     *
-     * @param context
-     * @param url
-     * @param imageView
-     * @param longImageView
-     * @ 已废弃
-     */
-    @Override
-    public void loadImage(@NonNull Context context, @NonNull String url,
-                          @NonNull final ImageView imageView,
-                          final SubsamplingScaleImageView longImageView) {
-        Glide.with(context)
-                .asBitmap()
-                .load(url)
-                .into(new ImageViewTarget<Bitmap>(imageView) {
-                    @Override
-                    protected void setResource(@Nullable Bitmap resource) {
-                        if (resource != null) {
-                            boolean eqLongImage = MediaUtils.isLongImg(resource.getWidth(),
-                                    resource.getHeight());
-                            longImageView.setVisibility(eqLongImage ? View.VISIBLE : View.GONE);
-                            imageView.setVisibility(eqLongImage ? View.GONE : View.VISIBLE);
-                            if (eqLongImage) {
-                                // 加载长图
-                                longImageView.setQuickScaleEnabled(true);
-                                longImageView.setZoomEnabled(true);
-                                longImageView.setPanEnabled(true);
-                                longImageView.setDoubleTapZoomDuration(100);
-                                longImageView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
-                                longImageView.setDoubleTapZoomDpi(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER);
-                                longImageView.setImage(ImageSource.bitmap(resource),
-                                        new ImageViewState(0, new PointF(0, 0), 0));
-                            } else {
-                                // 普通图片
-                                imageView.setImageBitmap(resource);
-                            }
-                        }
-                    }
-                });
-    }
-
-    /**
      * 加载相册目录
      *
      * @param context   上下文
@@ -172,23 +128,6 @@ public class GlideEngine implements ImageEngine {
                         imageView.setImageDrawable(circularBitmapDrawable);
                     }
                 });
-    }
-
-
-    /**
-     * 加载gif
-     *
-     * @param context   上下文
-     * @param url       图片路径
-     * @param imageView 承载图片ImageView
-     */
-    @Override
-    public void loadAsGifImage(@NonNull Context context, @NonNull String url,
-                               @NonNull ImageView imageView) {
-        Glide.with(context)
-                .asGif()
-                .load(url)
-                .into(imageView);
     }
 
     /**

@@ -1,3 +1,8 @@
+## 1.2.10
+fix android 12 can not open camera
+
+update PictureSelector
+
 ## 1.2.9
 add maxTime for pick video
 ## 1.2.8

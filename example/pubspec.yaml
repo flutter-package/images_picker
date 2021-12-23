@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: ^4.0.0-beta4
+  dio: ^4.0.4
   images_picker:
     # When depending on this package from a real application you should use:
     #   images_picker: ^x.y.z

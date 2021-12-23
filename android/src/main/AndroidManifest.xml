@@ -1,7 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.chavesgu.images_picker">
 
-
+  <queries>
+    <package android:name="${applicationId}"/>
+    <intent>
+      <action android:name="android.media.action.IMAGE_CAPTURE"/>
+    </intent>
+    <intent>
+      <action android:name="android.media.action.ACTION_VIDEO_CAPTURE"/>
+    </intent>
+  </queries>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.CAMERA" />
