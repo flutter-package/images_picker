@@ -67,15 +67,16 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
           group.enter();
           if asset.mediaType==PHAssetMediaType.image {
             let image = images[index];
-            if self.getImageType(asset: asset)=="gif" && supportGif { // gif 取原路径
+//             if self.getImageType(asset: asset)=="gif" && supportGif { 
+              // gif 取原路径
               self.resolveImage(asset: asset, resultHandler: { dir in
                 resArr.append(dir);
                 group.leave();
               });
-            } else {
-              resArr.append(self.resolveImage(image: image, maxSize: maxSize));
-              group.leave();
-            }
+//             } else {
+//               resArr.append(self.resolveImage(image: image, maxSize: maxSize));
+//               group.leave();
+//             }
           } else if asset.mediaType==PHAssetMediaType.video {
             manager.requestAVAsset(forVideo: asset, options: options, resultHandler: { avasset,audioMix,info  in
               let videoUrl = avasset as! AVURLAsset;
