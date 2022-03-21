@@ -1,3 +1,5 @@
+## 1.2.11
+update ios package
 ## 1.2.10
 fix android 12 can not open camera
 

@@ -41,9 +41,10 @@ class _MyAppState extends State<MyApp> {
                   language: Language.System,
                   maxTime: 30,
                   // maxSize: 500,
-                  // cropOpt: CropOption(
-                  //   aspectRatio: CropAspectRatio.wh16x9,
-                  // ),
+                  cropOpt: CropOption(
+                    // aspectRatio: CropAspectRatio.wh16x9,
+                    cropType: CropType.circle,
+                  ),
                 );
                 print(res);
                 if (res != null) {

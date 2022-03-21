@@ -43,13 +43,15 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       if cropOption != nil {
         config.allowEditImage = true;
         let corpType = cropOption!["cropType"] as! String;
+        let editConfig = ZLEditImageConfiguration();
         if (corpType=="CropType.circle") {
-          config.editImageClipRatios = [ZLImageClipRatio.circle];
+          editConfig.clipRatios = [ZLImageClipRatio.circle]
         } else {
           if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
-            config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+            editConfig.clipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
           }
         }
+        config.editImageConfiguration = editConfig;
       }
       
       self.setThemeColor(configuration: config, colors: theme);
@@ -107,16 +109,23 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
       
       let vc = UIApplication.shared.delegate!.window!!.rootViewController!;
       let camera = ZLCustomCamera();
-      let cameraConfig = ZLCameraConfiguration();
+//      let cameraConfig = ZLCameraConfiguration();
       let config = ZLPhotoConfiguration.default();
       config.maxRecordDuration = maxTime ?? 15;
       self.setLanguage(configuration: config, language: language);
       self.setConfig(configuration: config, pickType: pickType);
       if cropOption != nil {
         config.allowEditImage = true;
-        if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
-          config.editImageClipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+        let corpType = cropOption!["cropType"] as! String;
+        let editConfig = ZLEditImageConfiguration();
+        if (corpType=="CropType.circle") {
+          editConfig.clipRatios = [ZLImageClipRatio.circle]
+        } else {
+          if let aspectRatioX = cropOption!["aspectRatioX"] as? Double,let aspectRatioY = cropOption!["aspectRatioY"] as? Double {
+            editConfig.clipRatios = [ZLImageClipRatio(title: "", whRatio: CGFloat(aspectRatioX/aspectRatioY))];
+          }
         }
+        config.editImageConfiguration = editConfig;
       }
       
       self.setThemeColor(configuration: config, colors: theme);
