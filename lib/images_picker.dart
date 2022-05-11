@@ -48,6 +48,7 @@ class ImagesPicker {
             path: image["path"],
             size: ((image["size"] ?? 0) / 1024).toDouble(),
             thumbPath: image["thumbPath"],
+            duration: image["duration"] ?? 0,
           );
           return media;
         }).toList();
@@ -96,6 +97,7 @@ class ImagesPicker {
             path: image["path"],
             size: ((image["size"] ?? 0) / 1024).toDouble(),
             thumbPath: image["thumbPath"],
+            duration: image["duration"] ?? 0,
           );
           return media;
         }).toList();
@@ -194,9 +196,9 @@ class Media {
   /// 文件大小
   double size;
 
-  Media({
-    required this.path,
-    this.thumbPath,
-    required this.size,
-  });
+  // 时长 仅视频有效
+  double? duration;
+
+  Media(
+      {required this.path, this.thumbPath, required this.size, this.duration});
 }

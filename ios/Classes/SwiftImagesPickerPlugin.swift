@@ -83,7 +83,12 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
               let videoUrl = avasset as! AVURLAsset;
               let url = videoUrl.url;
               // TODO: mov to mp4
-              resArr.append(self.resolveVideo(url: url));
+                let dir =self.resolveVideo(url: url);
+              //  let audioDuration = videoUrl.duration;
+               // let audioDurationSeconds = CMTimeGetSeconds(audioDuration);
+                //dir.updateValue(audioDurationSeconds, forKey: "duration");
+                
+              resArr.append(dir);
               group.leave();
             })
           } else {
@@ -298,7 +303,12 @@ public class SwiftImagesPickerPlugin: NSObject, FlutterPlugin {
     let urlStr = url.absoluteString;
     let path = (urlStr as NSString).substring(from: 7);
     dir.updateValue(path, forKey: "path");
-    
+
+        let video =  AVURLAsset(url:url);
+        let audioDuration = video.duration;
+        
+       let audioDurationSeconds = CMTimeGetSeconds(audioDuration);
+      dir.updateValue(audioDurationSeconds, forKey: "duration");
     // 获取视频封面图
     if let thumb = self.getVideoThumbPath(url: path) {
       let thumbData = thumb.jpegData(compressionQuality: 1); // 转Data
