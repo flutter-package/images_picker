@@ -258,12 +258,15 @@ public class ImagesPickerPlugin implements FlutterPlugin, MethodCallHandler, Act
               map.put("path", path);
 
               String thumbPath;
+              double duration = 0;
               if (media.getMimeType().contains("image")) {
                 thumbPath = path;
               } else {
                 thumbPath = createVideoThumb(path);
+                duration = media.getDuration()/1000.0;
               }
               map.put("thumbPath", thumbPath);
+              map.put("duration", duration);
 
               int size = getFileSize(path);
               map.put("size", size);
