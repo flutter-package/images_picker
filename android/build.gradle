@@ -23,6 +23,8 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'com.chavesgu.images_picker'
+    
     compileSdkVersion 31
 
     defaultConfig {
